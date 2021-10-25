@@ -5,6 +5,8 @@ import Router from 'vue-router'
 const PcIndex = () => import('@/pages/pcIndex')
 const PcHome = () => import('@/pages/pc/pcHome')
 const MainChatIndex = () => import('@/pages/pc/MainChat/index')
+const pcLogin = () => import('@/pages/pc/login');
+const pcSignup = () => import('@/pages/pc/signup');
 
 // 移动端
 const MobileIndex = () => import('@/pages/mobileIndex')
@@ -37,6 +39,14 @@ export default new Router({
         path: 'chat',
         name: 'MainChatIndex',
         component: MainChatIndex
+      },{
+        path: 'login',
+        name: 'pcLogin',
+        component: pcLogin
+      },{
+        path: 'signup',
+        name: 'pcSignup',
+        component: pcSignup
       }]
     },
     {
