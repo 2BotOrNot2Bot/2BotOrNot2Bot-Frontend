@@ -42,7 +42,7 @@ export default {
   mounted() {
     this.$refs.body.style.height = "calc(100% - " + this.$refs.navbar.$el.clientHeight + 'px)';
     this.timeRemain = 180;
-    this.selfAvatarId = Math.floor(Math.random() * 3);
+    this.selfAvatarId = Math.floor(Math.random() * 5);
     this.countDown();
   },
   data () {
