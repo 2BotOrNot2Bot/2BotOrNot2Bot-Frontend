@@ -1,5 +1,5 @@
 <template>
-  <div id="chatScreen">
+  <div id="chatScreen" ref="chatScreen">
 <!--    display message-->
 <!--    TODO: Receive message btn for testing-->
 <!--    <el-button style="position: absolute" @click="receive" id="sendBtn" icon="el-icon-arrow-right"/>-->
@@ -22,7 +22,8 @@ export default {
   name: "chat-screen",
   components: {MessageTag},
   mounted() {
-    this.$refs.displayMessages.style.height = 'calc(100% - ' + this.$refs.bottom.offsetHeight + 'px)';
+    this.$refs.displayMessages.style.height = 'calc(100% - ' + this.$refs.bottom.offsetHeight + 'px - 3rem)';
+    this.$refs.bottom.style.width = 'calc(50% - 4rem)';
   },
   data () {
     return {
@@ -32,6 +33,11 @@ export default {
         send: true
       }]
     }
+  },
+  updated(){
+    // 聊天定位到底部
+    let ele = document.getElementById('displayMessages');
+    ele.scrollTop = ele.scrollHeight;
   },
   methods: {
     sendMessage() {
@@ -61,12 +67,12 @@ export default {
 }
 #displayMessages {
   overflow: auto;
+  padding: 0 2rem;
 }
 #bottom {
   display: flex;
-  align-items: center;
   height: 3rem;
-  padding: 2rem 2rem;
+  margin: 1rem 2rem 2rem;
   position: absolute;
   bottom: 0;
   svg {
@@ -96,7 +102,7 @@ export default {
   height: 100%;
 }
 /deep/ .vs-input-parent {
-  flex: 3;
+  flex: 2;
   margin: 0 2rem;
   height: 100%;
 }

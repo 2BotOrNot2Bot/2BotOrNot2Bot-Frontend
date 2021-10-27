@@ -31,7 +31,7 @@ export default {
 .message {
   display: flex;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 1rem 0;
   svg {
     width: 3rem;
     height: auto;
