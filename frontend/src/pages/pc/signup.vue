@@ -1,8 +1,9 @@
 <template>
 <div id="bg">
   <div id="signup-bg">
+      <img src="../../assets/logo-b.svg" alt="logo" class="logo">
     <div style="margin:0px auto;">
-      <h1 style="margin:0px;">Sign up</h1>
+      <h1 style="margin:0px;color:white;font-size:50px;">Sign up</h1>
       <p>Already have an account? <router-link to="/pc/login"><span style="color:#FF9F1C; text-decoration: underline;">Sign in Here</span></router-link></p>
       <div>
         <p>Email:</p>
@@ -52,18 +53,20 @@ export default {
   z-index:1;
 }
 #signup-bg{
-  width:50%;
-  height:50%;
+  width:35%;
+  height:75%;
   margin: 0px auto;
   background: inherit;
   position: relative;
+  top:12%;
 }
 #signup-bg > div{
-  width:100%;
+  color:lightgray;
+  width:80%;
   height: 100%;
   position: absolute;
-  left:0;
-  top:0;
+  left:10%;
+  top:10%;
   z-index: 11;
 }
 #signup-bg:after{
@@ -74,7 +77,8 @@ export default {
   left:0;
   top:0;
   background: inherit;
-  filter: blur(20px);
+  filter: blur(15px);
+  border:1px;
   z-index: 2;
 }
 
@@ -82,6 +86,15 @@ export default {
   width:100%;
   padding: 12px;
   margin:30px 0px;
+}
+.logo{
+  width:100px;
+  height:100px;
+  position:absolute;
+  right:-4%;
+  top:-4%;
+  color:white;
+  z-index:3;
 }
 
 </style>
