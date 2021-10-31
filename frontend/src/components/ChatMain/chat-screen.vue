@@ -2,7 +2,7 @@
   <div id="chatScreen" ref="chatScreen">
 <!--    display message-->
 <!--    TODO: Receive message btn for testing-->
-   <el-button style="position: absolute" @click="receive" id="sendBtn" icon="el-icon-arrow-right"/>
+   <!-- <el-button style="position: absolute" @click="receive" id="sendBtn" icon="el-icon-arrow-right"/> -->
     <div id="displayMessages" ref="displayMessages">
       <message-tag v-for="(message, index) in messageList" :message="message.message" :key="index" :send="message.send" :self-avatar-id="selfAvatarId" :chatter-avatar-id="chatterAvatarId"/>
     </div>
