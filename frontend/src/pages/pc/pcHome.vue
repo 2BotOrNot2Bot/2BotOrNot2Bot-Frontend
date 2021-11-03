@@ -22,6 +22,7 @@
 
 <script>
 import BotNavBar from "@/components/bot-nav-bar";
+import {hasToken} from "../../config/authentication";
 export default {
   name: "pcHome",
   components: {BotNavBar},
@@ -33,7 +34,11 @@ export default {
   },
   methods: {
     gotoTest () {
-      this.$router.push('/pc/signup');
+      if (hasToken()) {
+        this.$router.push('/pc/chat');
+      } else {
+        this.$router.push('/pc/signup');
+      }
     }
   }
 }

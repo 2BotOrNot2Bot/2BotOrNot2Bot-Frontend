@@ -27,8 +27,9 @@
 </template>
 
 <script>
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import {auth} from "../../main";
+import {createUserWithEmailAndPassword} from "firebase/auth";
+import {Message} from "element-ui";
 export default {
   name: "signup",
   data(){
@@ -48,16 +49,28 @@ export default {
         createUserWithEmailAndPassword(auth, this.email, this.password)
           .then((userCredential) => {
             const user = userCredential.user;
-            // TODO: 处理登陆状态 &
+            user.getIdToken().then((result) => {
+              // TODO: 处理登陆状态
+              sessionStorage.setItem('user_info', JSON.stringify({'id_token': result, 'email': this.email}));
+            }).catch(err => {
+              console.log(err.code, err.message);
+              this.$message.error(err.message);
+            })
             this.$message.success("Successfully sign up.");
             setTimeout(() => {
               this.$router.push('/pc/chat');
             }, 2500);
           })
           .catch((error) => {
-            this.$message.error(error.message);
-            const errorCode = error.code;
-            const errorMessage = error.message;
+            if (error.code === 'auth/email-already-in-use') {
+              Message.error("Email has already been used. Please try log in. Jumping to log in page now...")
+              setTimeout(() => {
+                this.$router.push('/pc/login')
+              }, 2000);
+            } else {
+              Message.error("Error signing up. Please contact admin or try again later.");
+              console.log(error.code, error.message)
+            }
           });
       }
     },

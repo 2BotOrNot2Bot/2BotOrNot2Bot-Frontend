@@ -22,11 +22,11 @@ Vue.use(Vuesax)
  * @author Tianyi(Lorena) Yan
  * @date 2021/11/2
 */
+
 // Configuration for firebase
-import { initializeApp } from "firebase/app";
+import { initializeApp } from 'firebase/app';
 import { getAnalytics } from "firebase/analytics";
 import {getAuth} from "firebase/auth";
-// https://firebase.google.com/docs/web/setup#available-libraries
 
 const firebaseConfig = {
   apiKey: "AIzaSyCIu7zwyQGt-6WzdCq7ZamJoZwWRPCT2vY",
@@ -52,4 +52,4 @@ new Vue({
 })
 
 const auth = getAuth();
-export {auth}
+export {auth, app}

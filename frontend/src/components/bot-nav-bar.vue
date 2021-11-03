@@ -7,34 +7,97 @@
       <span>STATS</span>
     </div>
     <svg style="height: 50%; margin-left: auto;" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF"><path d="M0 0h24v24H0z" fill="none"/><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2 0 .68.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2 0-.68.07-1.35.16-2h4.68c.09.65.16 1.32.16 2 0 .68-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2 0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z"/></svg>
-    <el-dropdown style="height: 50%;">
+    <svg v-if="!isAuthenticated" @click="goToSignUp" style="height: 35%;margin-right: 2rem;margin-left: 0.5rem;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><defs></defs><g id="图层_2" data-name="图层 2"><g id="图层_1-2" data-name="图层 1"><path class="cls-1" fill="#fff" d="M24,0A24,24,0,1,0,48,24,24,24,0,0,0,24,0Zm0,7.2a7.2,7.2,0,1,1-7.2,7.2A7.2,7.2,0,0,1,24,7.2Zm0,34.08A17.28,17.28,0,0,1,9.6,33.55c.07-4.77,9.6-7.39,14.4-7.39s14.33,2.62,14.4,7.39A17.28,17.28,0,0,1,24,41.28Z"/></g></g></svg>
+    <el-dropdown v-else style="height: 50%;" @command="handleCommand">
       <span style="display: flex;align-items: center;height: 100%;">
         <svg style="height: 70%;margin-right: 2rem;margin-left: 0.5rem;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><defs></defs><g id="图层_2" data-name="图层 2"><g id="图层_1-2" data-name="图层 1"><path class="cls-1" fill="#fff" d="M24,0A24,24,0,1,0,48,24,24,24,0,0,0,24,0Zm0,7.2a7.2,7.2,0,1,1-7.2,7.2A7.2,7.2,0,0,1,24,7.2Zm0,34.08A17.28,17.28,0,0,1,9.6,33.55c.07-4.77,9.6-7.39,14.4-7.39s14.33,2.62,14.4,7.39A17.28,17.28,0,0,1,24,41.28Z"/></g></g></svg>
       </span>
       <el-dropdown-menu slot="dropdown">
 <!--        TODO: add user score-->
-        <el-dropdown-item>Your score: XXX</el-dropdown-item>
-        <el-dropdown-item>狮子头</el-dropdown-item>
+        <el-dropdown-item style="color: #000000ab;font-weight: 600;" disabled>{{userEmail}}</el-dropdown-item>
+        <el-dropdown-item style="color: #000000ab;" disabled divided>Your score: XXX</el-dropdown-item>
+        <el-dropdown-item id="logout" :command="-1">Log out</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
+<!--    Dialog box for asking whether want to logout-->
+    <vs-dialog prevent-close not-close v-model="logoutDialog">
+      <template>
+        <h4 class="not-margin">
+          Want to log out?
+        </h4>
+      </template>
+      <template #footer>
+        <vs-button block border @click="logoutDialog = false">
+          Cancel
+        </vs-button>
+        <vs-button block @click="logout">
+          Yes
+        </vs-button>
+      </template>
+    </vs-dialog>
   </div>
 </template>
 
 <script>
+import {getEmail, hasToken} from "../config/authentication";
+import {signOut} from "firebase/auth";
+import {auth} from "../main";
+
 export default {
   name: "bot-nav-bar",
   props: {
     selfAvatarId: Number
   },
+  mounted() {
+    this.isAuthenticated = hasToken()
+    if (this.isAuthenticated) {
+      this.userEmail = getEmail()
+    }
+  },
+  data () {
+    return {
+      isAuthenticated: false,
+      logoutDialog: false,
+      userEmail: ''
+    }
+  },
   methods: {
     goHome () {
       this.$router.push('/pc/home');
+    },
+    handleCommand(command) {
+      if (command === -1) {
+        this.logoutDialog = true;
+      }
+    },
+    logout () {
+      this.logoutDialog = false;
+      signOut(auth).then(() => {
+        sessionStorage.removeItem('user_info');
+        this.$message.success('Log out successfully');
+        setTimeout(() => {
+          this.$router.replace('/pc/home');
+        }, 2500)
+      }).catch((error) => {
+        console.log(error.code, error.message);
+        this.$message.error("Error. Please contact admin.")
+      });
+    },
+    goToSignUp () {
+      this.$router.push('/pc/signup');
     }
   }
 }
 </script>
 
 <style scoped lang="less">
+#logout:hover{
+  color: #ff3838;
+  background-color: #ffdede;
+}
+/deep/.vs-dialog__footer {
+  display: flex;
+}
 #navBar {
   background-color: black;
   color: white;

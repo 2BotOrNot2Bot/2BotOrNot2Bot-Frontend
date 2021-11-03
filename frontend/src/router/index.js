@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import {Message} from "element-ui";
+import {hasToken} from "../config/authentication";
 
 // PC端
 const PcIndex = () => import('@/pages/pcIndex')
@@ -24,7 +26,7 @@ Router.prototype.replace = function replace(location) {
   return originalReplace.call(this, location).catch(err => err);
 };
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   routes: [
     {
@@ -61,3 +63,21 @@ export default new Router({
     }
   ]
 })
+
+// TODO: Verify login status
+router.beforeEach((to, from, next) => {
+  // console.log(to);
+  // console.log(from);
+  if (window.name !== "" && !hasToken() && to.name !== 'pcLogin' && to.name !== 'pcHome' && to.name !== 'pcSignup') {
+    // Need to login: redirect to login page
+    Message.error("Please login first.")
+    setTimeout(() => {
+      next({
+        path:'/pc/login'
+      })
+    }, 2500);
+  }
+  next();
+});
+
+export default router

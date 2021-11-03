@@ -53,6 +53,7 @@
 <script>
 import BotNavBar from "@/components/bot-nav-bar";
 import ChatScreen from "@/components/ChatMain/chat-screen";
+import {hasToken} from "../../../config/authentication";
 export default {
   name: "index",
   components: {ChatScreen, BotNavBar},
@@ -60,7 +61,9 @@ export default {
     this.$refs.body.style.height = "calc(100% - " + this.$refs.navbar.$el.clientHeight + 'px)';
     this.timeRemain = 180;
     this.selfAvatarId = Math.floor(Math.random() * 5);
-    this.showRules = true;
+    if (hasToken()) {
+      this.showRules = true;
+    }
   },
   data () {
     return {

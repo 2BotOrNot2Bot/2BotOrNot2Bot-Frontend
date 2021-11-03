@@ -3,6 +3,7 @@ import { Loading, Message } from 'element-ui';
 var loading = null;
 
 Axios.interceptors.request.use((config) => {
+  config.headers['Authentication'] = 'Bearer ' + sessionStorage.getItem('id_token');
   loading = Loading.service({
     lock: true,
     text: 'Loading...',

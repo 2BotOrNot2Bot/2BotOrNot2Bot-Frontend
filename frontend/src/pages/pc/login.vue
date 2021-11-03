@@ -40,14 +40,20 @@ export default {
           .then((userCredential) => {
             const user = userCredential.user;
             console.log(user);
+            user.getIdToken().then((result) => {
+              sessionStorage.setItem('user_info', JSON.stringify({'id_token': result, 'email': this.email}));
+            }).catch(err => {
+              console.log(err.code, err.message);
+              this.$message.error("Invalid email or password.");
+            })
             // TODO: 处理用户登陆状态 & 传后端
             this.$message.success("Successfully login.");
             setTimeout(() => {
               this.$router.push('/pc/chat');
             }, 2500);
           }).catch((error) => {
-            console.log(error.code, error.message);
-            this.$message.error("Invalid email or password.");
+          console.log(error.code, error.message);
+          this.$message.error("Invalid email or password.");
         });
       }
     },
