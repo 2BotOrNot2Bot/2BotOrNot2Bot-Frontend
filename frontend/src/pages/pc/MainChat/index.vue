@@ -1,5 +1,22 @@
 <template>
   <div>
+<!--    Initial dialog window for explaining the rules-->
+    <vs-dialog prevent-close not-close v-model="showRules">
+      <template>
+        <h4 class="not-margin">Hi there!</h4>
+        <h5 style="word-break: break-word;max-width: 30rem;">Welcome to 2BotOrNot2Bot. You will be chatting with 2 "persons" at the same time.
+          One is a chatbot, and another one is an actual human, which will be randomly assigned.
+          <br/><br/>You will have 3 minutes to chat with both of them. When the time is up, you will be asked
+          to make a guess of which one is the robot. You will accumulate 1 point if you make a correct guess!
+        </h5>
+      </template>
+      <template #footer>
+        <vs-button block @click="startChat">
+          Start chatting!
+        </vs-button>
+      </template>
+    </vs-dialog>
+
     <bot-nav-bar ref="navbar" style="border-bottom: 2px solid white;" :selfAvatarId="selfAvatarId">
       <span style="cursor: text">{{displayedTime}}</span>
     </bot-nav-bar>
@@ -43,14 +60,15 @@ export default {
     this.$refs.body.style.height = "calc(100% - " + this.$refs.navbar.$el.clientHeight + 'px)';
     this.timeRemain = 180;
     this.selfAvatarId = Math.floor(Math.random() * 5);
-    this.countDown();
+    this.showRules = true;
   },
   data () {
     return {
       timeRemain: 0,
       chooseAnswer: false,
       answer: '',
-      selfAvatarId: 0
+      selfAvatarId: 0,
+      showRules: false
     }
   },
   computed: {
@@ -72,6 +90,10 @@ export default {
     },
     submitAnswer () {
       this.chooseAnswer = false;;
+    },
+    startChat () {
+      this.showRules = false;
+      this.countDown();
     }
   }
 }

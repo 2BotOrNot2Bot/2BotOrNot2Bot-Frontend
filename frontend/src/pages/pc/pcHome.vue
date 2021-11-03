@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     gotoTest () {
-      this.$router.push('/pc/chat');
+      this.$router.push('/pc/signup');
     }
   }
 }

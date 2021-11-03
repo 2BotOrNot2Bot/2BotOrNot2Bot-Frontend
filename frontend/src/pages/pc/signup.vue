@@ -7,12 +7,12 @@
       <p>Already have an account? <router-link to="/pc/login"><span style="color:#FF9F1C; text-decoration: underline;">Sign in Here</span></router-link></p>
       <div>
         <p>Email:</p>
-        <el-input class="input" v-model="input.email" placeholder="yibo@usc.edu"></el-input>
+        <el-input class="input" v-model="email" placeholder="yibo@usc.edu"></el-input>
       </div>
 
       <div>
         <p>Password:</p>
-        <el-input class="input" v-model="input.password" placeholder="test1234" show-password></el-input>
+        <el-input class="input" v-model="password" placeholder="test1234" show-password></el-input>
       </div>
 
       <div>
@@ -27,19 +27,40 @@
 </template>
 
 <script>
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import {auth} from "../../main";
 export default {
   name: "signup",
   data(){
     return{
-      input: {
-        email:'',
-        password:'',
-      },
-      confirm:'',
+      email:'',
+      password:'',
+      confirm:''
     }
   },
   methods: {
-    signup(){},
+    signup(){
+      if (this.email === '' || this.password === '') {
+        this.$message.error("Please enter your email and password");
+      } else if (this.password !== this.confirm) {
+        this.$message.error("Passwords do not match.");
+      } else {
+        createUserWithEmailAndPassword(auth, this.email, this.password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+            // TODO: 处理登陆状态 &
+            this.$message.success("Successfully sign up.");
+            setTimeout(() => {
+              this.$router.push('/pc/chat');
+            }, 2500);
+          })
+          .catch((error) => {
+            this.$message.error(error.message);
+            const errorCode = error.code;
+            const errorMessage = error.message;
+          });
+      }
+    },
   }
 }
 </script>
@@ -55,7 +76,7 @@ export default {
 #signup-bg{
   width:35%;
   height:75%;
-  margin: 0px auto;
+  margin: 0 auto;
   background: inherit;
   position: relative;
   top:12%;

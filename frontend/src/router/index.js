@@ -14,7 +14,7 @@ const MobileHome = () => import('@/pages/mobile/mobileHome')
 
 Vue.use(Router)
 
-// 避免重复路由
+// Avoid repetitive routing
 const originalPush = Router.prototype.push;
 Router.prototype.push = function replace(location) {
   return originalReplace.call(this, location).catch(err => err);

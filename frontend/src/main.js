@@ -17,6 +17,32 @@ Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(Vuesax)
 
+/**
+ * @Description:
+ * @author Tianyi(Lorena) Yan
+ * @date 2021/11/2
+*/
+// Configuration for firebase
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import {getAuth} from "firebase/auth";
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCIu7zwyQGt-6WzdCq7ZamJoZwWRPCT2vY",
+  authDomain: "botornot2bot-8e49c.firebaseapp.com",
+  databaseURL: "https://botornot2bot-8e49c-default-rtdb.firebaseio.com",
+  projectId: "botornot2bot-8e49c",
+  storageBucket: "botornot2bot-8e49c.appspot.com",
+  messagingSenderId: "340881665889",
+  appId: "1:340881665889:web:cb8f93b34b3b67c0ae5f20",
+  measurementId: "G-0S5MHJ2H1W"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
@@ -24,3 +50,6 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+
+const auth = getAuth();
+export {auth}
