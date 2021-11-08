@@ -1,3 +1,5 @@
+<!--@Description: navigation link-->
+<!--@author Tianyi(Lorena) Yan-->
 <template>
   <router-link ref="myRouterLink" class="navLink" :to="to"><slot/></router-link>
 </template>

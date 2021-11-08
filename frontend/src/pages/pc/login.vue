@@ -46,7 +46,6 @@ export default {
               console.log(err.code, err.message);
               this.$message.error("Invalid email or password.");
             })
-            // TODO: 处理用户登陆状态 & 传后端
             this.$message.success("Successfully login.");
             setTimeout(() => {
               this.$router.push('/pc/chat');

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import {Message} from "element-ui";
 import {hasToken} from "../config/authentication";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 // PC端
 const PcIndex = () => import('@/pages/pcIndex')
@@ -68,6 +69,7 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   // console.log(to);
   // console.log(from);
+  // https://firebase.google.com/docs/auth/web/manage-users
   if (window.name !== "" && !hasToken() && to.name !== 'pcLogin' && to.name !== 'pcHome' && to.name !== 'pcSignup') {
     // Need to login: redirect to login page
     Message.error("Please login first.")

@@ -1,3 +1,5 @@
+<!--@Description: Main window for chatting, including navigation bar and chat-screen-->
+<!--@author Tianyi(Lorena) Yan-->
 <template>
   <div>
 <!--    Initial dialog window for explaining the rules-->

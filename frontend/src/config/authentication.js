@@ -3,7 +3,6 @@
  * @author Tianyi(Lorena) Yan
  * @date 2021/11/2
  */
-import {Message} from "element-ui";
 
 function hasToken () {
   return sessionStorage.getItem('user_info');

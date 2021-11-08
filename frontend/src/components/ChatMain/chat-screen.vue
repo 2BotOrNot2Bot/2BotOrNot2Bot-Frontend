@@ -1,3 +1,6 @@
+<!--@Description: Independent, main window for chatting-->
+<!--@author Tianyi(Lorena) Yan-->
+
 <template>
   <div id="chatScreen" ref="chatScreen">
 <!--    display message-->

@@ -50,7 +50,6 @@ export default {
           .then((userCredential) => {
             const user = userCredential.user;
             user.getIdToken().then((result) => {
-              // TODO: 处理登陆状态
               sessionStorage.setItem('user_info', JSON.stringify({'id_token': result, 'email': this.email}));
             }).catch(err => {
               console.log(err.code, err.message);

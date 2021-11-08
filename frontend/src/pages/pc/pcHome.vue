@@ -1,3 +1,6 @@
+<!--@Description: Main Home Page-->
+<!--@author Tianyi(Lorena) Yan-->
+
 <template>
   <div>
     <div id="background">
@@ -5,7 +8,7 @@
       <div class="backgroundImg" :style="{background: 'url('+backgroundRight+') no-repeat fixed center center', backgroundSize: 'cover', float: 'right'}"/>
     </div>
     <div style="padding-top: 5rem">
-      <bot-nav-bar style="margin: 0 5rem;"><span>TEST</span></bot-nav-bar>
+      <bot-nav-bar style="margin: 0 5rem;"><span @click="gotoTest">TEST</span></bot-nav-bar>
     </div>
     <div id="startBtn" @click="gotoTest">
       <div id="btnBody">
@@ -22,7 +25,6 @@
 
 <script>
 import BotNavBar from "@/components/bot-nav-bar";
-import {hasToken} from "../../config/authentication";
 export default {
   name: "pcHome",
   components: {BotNavBar},
@@ -34,11 +36,7 @@ export default {
   },
   methods: {
     gotoTest () {
-      if (hasToken()) {
-        this.$router.push('/pc/chat');
-      } else {
-        this.$router.push('/pc/signup');
-      }
+      this.$router.push('/pc/chat');
     }
   }
 }

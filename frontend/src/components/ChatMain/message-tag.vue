@@ -1,3 +1,6 @@
+<!--@Description: Tag component for displaying messages(including both user avatar and the message content)-->
+<!--@author Tianyi(Lorena) Yan-->
+
 <template>
   <div>
     <div v-if="send" class="message" style="justify-content: right;">
