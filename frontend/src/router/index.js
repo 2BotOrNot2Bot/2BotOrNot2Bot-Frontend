@@ -66,20 +66,20 @@ const router = new Router({
 })
 
 // TODO: Verify login status
-router.beforeEach((to, from, next) => {
-  // console.log(to);
-  // console.log(from);
-  // https://firebase.google.com/docs/auth/web/manage-users
-  if (window.name !== "" && !hasToken() && to.name !== 'pcLogin' && to.name !== 'pcHome' && to.name !== 'pcSignup') {
-    // Need to login: redirect to login page
-    Message.error("Please login first.")
-    setTimeout(() => {
-      next({
-        path:'/pc/login'
-      })
-    }, 2500);
-  }
-  next();
-});
+// router.beforeEach((to, from, next) => {
+//   // console.log(to);
+//   // console.log(from);
+//   // https://firebase.google.com/docs/auth/web/manage-users
+//   if (window.name !== "" && !hasToken() && to.name !== 'pcLogin' && to.name !== 'pcHome' && to.name !== 'pcSignup') {
+//     // Need to login: redirect to login page
+//     Message.error("Please login first.")
+//     setTimeout(() => {
+//       next({
+//         path:'/pc/login'
+//       })
+//     }, 2500);
+//   }
+//   next();
+// });
 
 export default router

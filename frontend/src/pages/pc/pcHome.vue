@@ -25,6 +25,7 @@
 
 <script>
 import BotNavBar from "@/components/bot-nav-bar";
+import {hasToken} from "../../config/authentication";
 export default {
   name: "pcHome",
   components: {BotNavBar},

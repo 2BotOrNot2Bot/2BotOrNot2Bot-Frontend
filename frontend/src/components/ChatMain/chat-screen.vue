@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import MessageTag from "./message-tag";
 export default {
   name: "chat-screen",
@@ -50,11 +49,15 @@ export default {
   },
   methods: {
     sendMessage() {
-      if (this.inputMessage.length > 0) {
+      if (this.inputMessage.trim().length === 0) {
+        this.$message.error("Please enter your message.");
+      } else {
         this.messageList.push({
           message: this.inputMessage,
           send: true
         });
+        this.inputMessage = '';   // Clear input box
+        // TODO: 向后端发送消息
       }
     },
     receive () {

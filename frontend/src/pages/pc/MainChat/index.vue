@@ -63,9 +63,7 @@ export default {
     this.$refs.body.style.height = "calc(100% - " + this.$refs.navbar.$el.clientHeight + 'px)';
     this.timeRemain = 180;
     this.selfAvatarId = Math.floor(Math.random() * 5);
-    if (hasToken()) {
-      this.showRules = true;
-    }
+    this.showRules = true;
   },
   data () {
     return {
@@ -73,7 +71,8 @@ export default {
       chooseAnswer: false,
       answer: '',
       selfAvatarId: 0,
-      showRules: false
+      showRules: false,
+      countInterval: ''
     }
   },
   computed: {
@@ -94,7 +93,7 @@ export default {
       }, 1000);
     },
     submitAnswer () {
-      this.chooseAnswer = false;;
+      this.chooseAnswer = false;
     },
     startChat () {
       this.showRules = false;
