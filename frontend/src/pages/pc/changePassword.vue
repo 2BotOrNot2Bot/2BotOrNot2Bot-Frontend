@@ -3,19 +3,13 @@
   <div id="login-bg">
     <img src="../../assets/logo-b.svg" alt="logo" class="logo">
     <div style="margin:0px auto;">
-      <h1 style="margin:0px;color:white;font-size:50px;">Sign in</h1>
-      <p>New user? <router-link to="/pc/signup"><span style="color:#FF9F1C; text-decoration: underline;">Create an account</span></router-link></p>
+      <h1 style="margin:0px;color:white;font-size:40px;">Change your password</h1>
       <div>
-        <p>Email:</p>
-        <el-input class="input" v-model="input.email" placeholder="yibo@usc.edu"></el-input>
-      </div>
-      <div>
-        <p>Password:</p>
-        <el-input class="input" v-model="input.password" placeholder="test1234" show-password></el-input>
-        <p>Forget Your Password? <router-link to="/pc/changePassword"><span style="color:#FF9F1C; text-decoration: underline;"> Reset Password</span></router-link></p>
+        <p>Your Email:</p>
+        <el-input class="input" v-model="email" placeholder="yibo@usc.edu"></el-input>
       </div>
 
-      <el-button id="signin-btn" type="primary" v-on:click="signin()">Sign In</el-button>
+      <el-button id="signin-btn" type="primary" v-on:click="submit()">Send Password Reset Link</el-button>
     </div>
   </div>
 </div>
@@ -23,17 +17,14 @@
 
 <script>
 export default {
-  name: "login",
+  name: "changePassword",
   data(){
     return{
-      input:{
-        email:'',
-        password:'',
-      }
+      email:'',
     }
   },
   methods: {
-    signup(){},
+    submit(){},
   }
 }
 </script>
@@ -48,11 +39,11 @@ export default {
 }
 #login-bg{
   width:35%;
-  height:70%;
+  height:40%;
   margin: 0px auto;
   background: inherit;
   position: relative;
-  top:12%;
+  top:25%;
 }
 #login-bg > div{
   color:lightgray;
