@@ -15,7 +15,7 @@
         <p>Forget Your Password? <router-link to="/pc/changePassword"><span style="color:#FF9F1C; text-decoration: underline;"> Reset Password</span></router-link></p>
       </div>
 
-      <el-button id="signin-btn" type="primary" v-on:click="signin()">Sign In</el-button>
+      <el-button id="signin-btn" type="primary" @click="signin">Sign In</el-button>
     </div>
   </div>
 </div>
@@ -33,7 +33,7 @@ export default {
     }
   },
   methods: {
-    signup(){},
+    signin(){},
   }
 }
 </script>
@@ -48,8 +48,8 @@ export default {
 }
 #login-bg{
   width:35%;
-  height:70%;
-  margin: 0px auto;
+  height:60%;
+  margin: 0 auto;
   background: inherit;
   position: relative;
   top:12%;
