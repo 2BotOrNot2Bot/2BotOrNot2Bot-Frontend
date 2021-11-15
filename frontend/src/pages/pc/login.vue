@@ -13,6 +13,7 @@
         <div>
           <p>Password:</p>
           <el-input class="input" v-model="password" placeholder="test1234" show-password></el-input>
+          <p>Forget Your Password? <router-link to="/pc/changePassword"><span style="color:#FF9F1C; text-decoration: underline;"> Reset Password</span></router-link></p>
         </div>
         <el-button id="signin-btn" type="primary" @click="signIn">Sign In</el-button>
       </div>

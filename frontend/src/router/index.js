@@ -10,6 +10,7 @@ const PcHome = () => import('@/pages/pc/pcHome')
 const MainChatIndex = () => import('@/pages/pc/MainChat/index')
 const pcLogin = () => import('@/pages/pc/login');
 const pcSignup = () => import('@/pages/pc/signup');
+const pcPassword = () => import('@/pages/pc/changePassword')
 
 // 移动端
 const MobileIndex = () => import('@/pages/mobileIndex')
@@ -50,6 +51,10 @@ const router = new Router({
         path: 'signup',
         name: 'pcSignup',
         component: pcSignup
+      },{
+        path:'changePassword',
+        name:'pcChangePassword',
+        component: pcPassword
       }]
     },
     {
