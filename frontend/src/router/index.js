@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import {Message} from "element-ui";
-import {hasToken} from "../config/authentication";
+import {isLogin} from "../config/authentication";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 // PC端

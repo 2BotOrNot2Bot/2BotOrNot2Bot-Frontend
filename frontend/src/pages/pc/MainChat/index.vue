@@ -55,7 +55,7 @@
 <script>
 import BotNavBar from "@/components/bot-nav-bar";
 import ChatScreen from "@/components/ChatMain/chat-screen";
-import {hasToken} from "../../../config/authentication";
+import {isLogin} from "../../../config/authentication";
 export default {
   name: "index",
   components: {ChatScreen, BotNavBar},

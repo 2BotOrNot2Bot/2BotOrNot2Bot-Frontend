@@ -4,7 +4,7 @@
  * @date 2021/11/2
  */
 
-function hasToken () {
+function isLogin () {
   return sessionStorage.getItem('user_info');
 }
 
@@ -16,4 +16,8 @@ function getEmail () {
   return JSON.parse(sessionStorage.getItem('user_info')).email;
 }
 
-export {hasToken, getIdToken, getEmail}
+function getUid() {
+  return JSON.parse(sessionStorage.getItem('user_info')).uid;
+}
+
+export {isLogin, getIdToken, getEmail, getUid}

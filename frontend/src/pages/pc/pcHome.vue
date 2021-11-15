@@ -8,7 +8,7 @@
       <div class="backgroundImg" :style="{background: 'url('+backgroundRight+') no-repeat fixed center center', backgroundSize: 'cover', float: 'right'}"/>
     </div>
     <div style="padding-top: 5rem">
-      <bot-nav-bar style="margin: 0 5rem;"><span @click="gotoTest">TEST</span></bot-nav-bar>
+      <bot-nav-bar style="margin: 0 5rem;"><span @click="gotoTest">START TEST</span></bot-nav-bar>
     </div>
     <div id="startBtn" @click="gotoTest">
       <div id="btnBody">
@@ -20,12 +20,30 @@
       <h1>The Turing Test</h1>
       <span>The Turing Test is a method of inquiry in artificial intelligence (AI) for determining whether or not a computer is capable of thinking like a human being. The test is named after Alan Turing, the founder of the Turing Test and an English computer scientist, cryptanalyst, mathematician and theoretical biologist.</span>
     </div>
+
+<!--    if not login: choose whether login or continue as guest-->
+    <vs-dialog prevent-close v-model="chooseContinue">
+      <template>
+        <h4 class="not-margin">
+          You haven't login yet!
+        </h4>
+        <span>Register/login with us to get more points and check chatbots' statistics!</span>
+      </template>
+      <template #footer>
+        <vs-button block border @click="chat">
+          Continue as guest
+        </vs-button>
+        <vs-button block @click="login">
+          Login
+        </vs-button>
+      </template>
+    </vs-dialog>
   </div>
 </template>
 
 <script>
 import BotNavBar from "@/components/bot-nav-bar";
-import {hasToken} from "../../config/authentication";
+import {isLogin} from "../../config/authentication";
 export default {
   name: "pcHome",
   components: {BotNavBar},
@@ -33,11 +51,22 @@ export default {
     return {
       backgroundLeft: require('@/assets/home_left.jpg'),
       backgroundRight: require('@/assets/home_right.jpg'),
+      chooseContinue: false
     }
   },
   methods: {
     gotoTest () {
+      if (isLogin()) {
+        this.login();
+      } else {
+        this.chooseContinue = true;
+      }
+    },
+    chat () {
       this.$router.push('/pc/chat');
+    },
+    login () {
+      this.$router.push('/pc/login')
     }
   }
 }
@@ -99,5 +128,11 @@ export default {
     font-family: cursive;
     text-decoration: underline;
   }
+}
+/deep/.vs-dialog__footer {
+  display: flex;
+}
+/deep/.vs-dialog {
+  padding: 0 1rem 0.5rem;
 }
 </style>

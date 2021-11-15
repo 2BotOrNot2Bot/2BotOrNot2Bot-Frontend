@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import {getEmail, hasToken} from "../config/authentication";
+import {getEmail, isLogin} from "../config/authentication";
 import {signOut} from "firebase/auth";
 import {auth} from "../main";
 import Stats from "./Stats/stats";
@@ -56,7 +56,7 @@ export default {
     selfAvatarId: Number
   },
   mounted() {
-    this.isAuthenticated = hasToken()
+    this.isAuthenticated = isLogin()
     if (this.isAuthenticated) {
       this.userEmail = getEmail()
     }
@@ -84,7 +84,9 @@ export default {
         this.$message.success('Log out successfully');
         setTimeout(() => {
           this.$router.replace('/pc/home');
-          window.location.reload();
+          if (this.$route.name === 'pcHome') {
+            window.location.reload();
+          }
         }, 2500)
       }).catch((error) => {
         console.log(error.code, error.message);
@@ -98,7 +100,7 @@ export default {
       }, 2500)
     },
     showStat () {
-      if (hasToken()) {
+      if (isLogin()) {
         this.$emit("showstats");  // Tell the parent to temporarily stop the timer
         this.$refs.stats.showStats = true;
       } else {

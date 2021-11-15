@@ -41,7 +41,7 @@ export default {
             const user = userCredential.user;
             console.log(user);
             user.getIdToken().then((result) => {
-              sessionStorage.setItem('user_info', JSON.stringify({'id_token': result, 'email': this.email}));
+              sessionStorage.setItem('user_info', JSON.stringify({'id_token': result, 'email': this.email, 'uid': user.uid}));
             }).catch(err => {
               console.log(err.code, err.message);
               this.$message.error("Invalid email or password.");

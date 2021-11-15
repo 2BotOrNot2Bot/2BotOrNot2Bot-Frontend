@@ -49,8 +49,9 @@ export default {
         createUserWithEmailAndPassword(auth, this.email, this.password)
           .then((userCredential) => {
             const user = userCredential.user;
+            console.log(user);
             user.getIdToken().then((result) => {
-              sessionStorage.setItem('user_info', JSON.stringify({'id_token': result, 'email': this.email}));
+              sessionStorage.setItem('user_info', JSON.stringify({'id_token': result, 'email': this.email, 'uid': user.uid}));
             }).catch(err => {
               console.log(err.code, err.message);
               this.$message.error(err.message);
@@ -66,6 +67,8 @@ export default {
               setTimeout(() => {
                 this.$router.push('/pc/login')
               }, 2000);
+            } else if (error.code === 'auth/weak-password') {
+              Message.error("Password should be at least 6 characters. Please try again with stronger password");
             } else {
               Message.error("Error signing up. Please contact admin or try again later.");
               console.log(error.code, error.message)
