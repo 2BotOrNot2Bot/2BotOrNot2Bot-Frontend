@@ -4,8 +4,6 @@
 <template>
   <div id="chatScreen" ref="chatScreen">
 <!--    display message-->
-<!--    TODO: Receive message btn for testing-->
-<!--    <el-button style="position: absolute" @click="receive" id="sendBtn" icon="el-icon-arrow-right"/>-->
     <div id="displayMessages" ref="displayMessages">
       <message-tag v-for="(message, index) in messageList" :message="message.message" :key="index" :send="message.send" :self-avatar-id="selfAvatarId" :chatter-avatar-id="chatterAvatarId"/>
     </div>
@@ -17,7 +15,7 @@
       <svg v-else-if="selfAvatarId === 4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120.47 120.14"><title>资源 71</title><g id="图层_2" data-name="图层 2"><g id="图层_1-2" data-name="图层 1"><path class="cls-1" fill="#999" d="M109.33,25.11c25.18,36.33,5.41,85-36.65,93.56-25.14,5.1-46.38-3.11-61.18-24.08-14.91-21.14-15-43.7-2.18-66.22.66-1.15,1.4-2.26,2.1-3.39a2.25,2.25,0,0,1,2.92,1.94c.65,3.77,2.92,7,3.65,10.69.26,3.09-.84,5.9-1.82,8.72A46.43,46.43,0,0,0,14.77,71c4.09,20.91,25.51,29.1,42.42,16.27a13.32,13.32,0,0,1,2-1.49,3.28,3.28,0,0,1,2.31,0c7.57,6.2,15.85,9.75,25.82,6.76C98.93,89,106.17,78.78,106.85,65.13c.35-7-.21-14-2.84-20.59a14.62,14.62,0,0,1-1.19-6.82c.6-3.77,3-6.95,3.6-10.73A2.15,2.15,0,0,1,109.33,25.11Z"/><path class="cls-2" fill="#fff" d="M16.45,37.93c-3.62-3.56-3.64-8.52-5-12.95C24.78,8.6,41.45-.89,63.17.07a56.56,56.56,0,0,1,37.28,15.64c3.15,2.93,5.93,6.26,8.88,9.4-1.28,4.43-1.49,9.27-5,12.82-1.58,3.47-4.43,4.58-8.06,4.54s-7.29.18-10.93,0c-7.88-.41-15.16,1.19-21.55,6-2.09,1.56-4.2,1.94-6.37.26C50.46,43.36,42.47,42,33.94,42.47c-3.13.17-6.29,0-9.44,0C20.88,42.52,18,41.4,16.45,37.93Z"/><path class="cls-3" fill="#818181" d="M16.45,37.93c4.75,2.65,10,2.22,15.09,2.07,9.74-.28,19.37-.34,27.28,6.76,1.5,1.35,2.71.37,3.93-.6,6-4.81,12.89-6.29,20.5-6.24,7,.06,14.32,1.47,21.07-2,5.22,12.31,6.88,24.86,3.08,37.95-5.19,17.85-27.23,26-42.39,15.54-1.68-1.16-3.25-2.34-3.67-4.5-.41-.73-.94-1.6-.54-2.31,2.45-4.37,3-9.69,6.88-13.33C70.37,70.4,71.46,72.54,73,74c4.73,4.68,11.76,4.33,15.13-.69a9.59,9.59,0,0,0-1.75-12.6,9.78,9.78,0,0,0-13.11,1c-1.48,1.49-2,3.93-4.48,4.43-.16,0-.38.14-.48.06-5.34-4.08-10.68-3.46-16,0-2.1-.29-2.79-2.14-3.92-3.52-3.81-4.62-9.93-5.39-14.1-1.8a9.62,9.62,0,0,0-.77,13.44c3.65,4,9.94,4,14.2-.14,1.51-1.47,2.54-3.67,5.25-3,3.56,4.65,6.82,9.44,6.52,15.7-3.51,6.82-10.1,8.43-16.72,8.92C25.39,97.11,12.29,84,11.35,65.62A63.71,63.71,0,0,1,16.45,37.93Z"/><path class="cls-4" fill="#fefefe" d="M52.43,65c5.23-6.83,10.64-6.83,15.92,0,2.87,2.24,2.61,4.55.16,6.91-1.4,5.47-3.44,10.63-7.17,15H59.42c-3.7-4.37-5.76-9.52-7.17-15C49.81,69.58,49.54,67.27,52.43,65Z"/><path d="M52.43,65l-.18,6.9c-2.12,3.68-4.66,6.86-9.13,7.81A12.05,12.05,0,1,1,50.84,62C51.43,63,51.9,64,52.43,65Z"/><path d="M68.51,71.94,68.35,65c2-4.7,5-8.23,10.36-8.92a11.86,11.86,0,0,1,13.14,8.25A12.07,12.07,0,0,1,70.41,74.85C69.73,73.91,69.14,72.91,68.51,71.94Z"/></g></g></svg>
       <svg v-else-if="selfAvatarId === 5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120.37 120.16"><title>资源 72</title><g id="图层_2" data-name="图层 2"><g id="图层_1-2" data-name="图层 1"><path class="cls-1" fill="#fdfefe" d="M39.58,115.81a51.85,51.85,0,0,0,41.56,0c12.13-3.59,21.28-11.26,28.36-21.4a60,60,0,0,0-10.16-80c-26.59-23-68.82-18-88.25,11.37-14.53,21.92-14.7,44.66-1,67C16.94,103.87,26.71,112,39.58,115.81Z"/><path class="cls-2" fill="#999" d="M39.58,115.81c-12.87-3.78-22.64-11.94-29.46-23-13.73-22.33-13.56-45.07,1-67C30.52-3.54,72.75-8.58,99.34,14.42a60,60,0,0,1,10.16,80c-7.08,10.14-16.23,17.81-28.36,21.4.07-4.86,2.39-8.9,4.78-12.89,5.29-8.81,10.58-17.63,16-26.38,3.31-5.36,4.92-11.25,2.77-17.1-3-8.12-8.28-15-14.39-21.1-15.55-21.86-44.22-21.92-59.84,0-4.65,3.44-6.88,8.8-10.3,13.2-6.51,8.37-6.32,17-.8,25.85C24.68,86,29.86,94.66,35.05,103.35,37.35,107.19,39.5,111.13,39.58,115.81Z"/><path class="cls-3" fill="#fff" d="M90.27,38.35c6.11,6.14,11.4,13,14.39,21.1,2.15,5.85.54,11.74-2.77,17.1-5.39,8.75-10.68,17.57-16,26.38-2.39,4-4.71,8-4.78,12.89a51.85,51.85,0,0,1-41.56,0c-.08-4.68-2.23-8.62-4.53-12.46C29.86,94.66,24.68,86,19.33,77.4c-5.52-8.86-5.71-17.48.8-25.85,3.42-4.4,5.65-9.76,10.3-13.2,2.41-.28,4,1.14,5.68,2.58,4.74,4.14,9.46,8.31,14.29,12.35,6.35,5.3,13.58,5.29,19.89,0,4.83-4,9.56-8.21,14.3-12.35C86.24,39.49,87.86,38.07,90.27,38.35Z"/><path d="M90.27,38.35c-2.41-.28-4,1.14-5.68,2.58-4.74,4.14-9.47,8.31-14.3,12.35-6.31,5.29-13.54,5.3-19.89,0-4.83-4-9.55-8.21-14.29-12.35-1.65-1.44-3.27-2.86-5.68-2.58C46.05,16.43,74.72,16.49,90.27,38.35ZM53.19,40.29c0-3.35-3.78-8.06-6.37-7.8a4,4,0,0,0-3.94,4.25C42.83,39.29,48,43.08,51,42.87A2.14,2.14,0,0,0,53.19,40.29Zm15.72,2.54c4.27.06,9.17-3.78,9-6.32s-1.79-4.24-4.18-4C69.5,33,68.57,36.73,67.6,40,67.08,41.79,68.14,42.81,68.91,42.83Z"/><path class="cls-3" fill="#fff" d="M53.2,40.3A2.14,2.14,0,0,1,51,42.87c-3,.21-8.12-3.58-8.07-6.13a4,4,0,0,1,3.94-4.25C49.41,32.23,53.16,36.94,53.2,40.3Z"/><path class="cls-3" fill="#fff" d="M68.91,42.83c-.77,0-1.83-1-1.31-2.8,1-3.3,1.9-7,6.09-7.49,2.39-.27,4,1.53,4.18,4S73.18,42.89,68.91,42.83Z"/></g></g></svg>
       <vs-input state="dark" v-model="inputMessage" placeholder="Type in your message"/>
-      <el-button @click="sendMessage" id="sendBtn" icon="el-icon-arrow-right"/>
+      <el-button @click="sendMessage" id="sendBtn" icon="el-icon-arrow-right" :disabled="!canSend"/>
     </div>
   </div>
 </template>
@@ -31,15 +29,29 @@ export default {
     this.$refs.displayMessages.style.height = 'calc(100% - ' + this.$refs.bottom.offsetHeight + 'px - 3rem)';
     this.$refs.bottom.style.width = 'calc(50% - 4rem)';
     this.chatterAvatarId = Math.floor(Math.random() * 5);
+    let that = this;
+    this.$nextTick(function() {
+      this.$on('startChat', function(chatterUid) {
+        that.startChat(chatterUid);
+      });
+      this.$on('stopChat', function() {
+        that.stopChat();
+      });
+    });
   },
   props: {
-    selfAvatarId: Number
+    selfAvatarId: Number,
+    isRobot: Boolean
   },
   data () {
     return {
       inputMessage: '',
       messageList: [],
-      chatterAvatarId: 0
+      chatterAvatarId: 0,
+      canSend: true,  // Whether the user should start the conversation first, and whether the user can send a new message now
+      uid: 0,    // TODO 从session storage拿当前用户uid
+      chatterUid: -1,    // user id of the chatter
+      websocket: null
     }
   },
   updated(){
@@ -56,15 +68,70 @@ export default {
           message: this.inputMessage,
           send: true
         });
-        this.inputMessage = '';   // Clear input box
         // TODO: 向后端发送消息
+        // Use web socket to send message to the server
+        this.websocket.send(this.inputMessage);
+        this.inputMessage = '';   // Clear input box
+        // Disable the input box and send button until a new message is received
+        this.canSend = false;
       }
     },
     receive () {
-      this.messageList.push({
-        message: "hahahaha",
-        send: false
-      });
+      // Receive message from the server
+      let _this = this;
+      this.websocket.onmessage = function(e){
+        let resData = JSON.parse(e.data)
+        _this.messageList.push({
+          message: resData.newMessage,
+          send: false
+        });
+        // Enable the input box and send button after receiving a new message
+        _this.canSend = true;
+      }
+    },
+    startChat(chatterUid) {
+      // Who has a smaller uid will start the conversation first
+      this.canSend = this.uid < chatterUid;
+      this.chatterUid = chatterUid;
+      if (!this.isRobot) {    // If this chatting window is for user-to-user chat, then initialize web socket for chatting
+        this.initWebSocket(chatterUid);
+      } else {  // Else, call chat bot API and start chatting
+        // TODO: call chat bot API and start chatting
+      }
+    },
+    // Initialize web socket, connect to the server, and start chatting
+    initWebSocket(chatterUid) {
+      let _this = this;
+      if('WebSocket' in window){
+        _this.websocket = new WebSocket("ws://localhost:8080/chat/" + _this.uid + "/" + chatterUid);
+      } else{
+        _this.$message.error("Your browser does not support websocket. Please try with another web browser.")
+      }
+      // Function for handling connection errors
+      _this.websocket.onerror = function(){
+        // setMessageInnerHTML("error");
+        _this.$message.error("Connection error. Please try again later.")
+      };
+
+      // Successfully connected to the server
+      _this.websocket.onopen = function(event){
+        console.log("Successfully connected to the server");
+      }
+
+      // Close the socket if the browser window is closed
+      //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+      window.onbeforeunload = function(){
+        _this.websocket.close();
+      }
+    },
+    stopChat() {
+      // Function for closing the connection with the server
+      if (this.websocket !== null) {
+        let _this = this;
+        this.websocket.onclose = function(){
+          _this.websocket.close();
+        }
+      }
     }
   }
 }

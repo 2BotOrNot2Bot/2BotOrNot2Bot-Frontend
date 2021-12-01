@@ -1,10 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import {Message} from "element-ui";
-import {isLogin} from "../config/authentication";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-// PC端
+// PC
 const PcIndex = () => import('@/pages/pcIndex')
 const PcHome = () => import('@/pages/pc/pcHome')
 const MainChatIndex = () => import('@/pages/pc/MainChat/index')
@@ -12,9 +9,6 @@ const pcLogin = () => import('@/pages/pc/login');
 const pcSignup = () => import('@/pages/pc/signup');
 const pcPassword = () => import('@/pages/pc/changePassword')
 
-// 移动端
-const MobileIndex = () => import('@/pages/mobileIndex')
-const MobileHome = () => import('@/pages/mobile/mobileHome')
 
 Vue.use(Router)
 
@@ -55,16 +49,6 @@ const router = new Router({
         path:'changePassword',
         name:'pcChangePassword',
         component: pcPassword
-      }]
-    },
-    {
-      path: '/mobile',
-      name: 'mobileIndex',
-      component: MobileIndex,
-      children: [{
-        path: 'home',
-        name: 'mobileHome',
-        component: MobileHome
       }]
     }
   ]
