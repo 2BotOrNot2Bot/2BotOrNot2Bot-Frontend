@@ -22,6 +22,8 @@
 
 <script>
 import MessageTag from "./message-tag";
+import {getUid} from "../../config/authentication";
+import api from "../../config/api";
 export default {
   name: "chat-screen",
   components: {MessageTag},
@@ -29,6 +31,7 @@ export default {
     this.$refs.displayMessages.style.height = 'calc(100% - ' + this.$refs.bottom.offsetHeight + 'px - 3rem)';
     this.$refs.bottom.style.width = 'calc(50% - 4rem)';
     this.chatterAvatarId = Math.floor(Math.random() * 5);
+    this.uid = getUid();
     let that = this;
     this.$nextTick(function() {
       this.$on('startChat', function(chatterUid) {
@@ -49,7 +52,7 @@ export default {
       messageList: [],
       chatterAvatarId: 0,
       canSend: true,  // Whether the user should start the conversation first, and whether the user can send a new message now
-      uid: 0,    // TODO 从session storage拿当前用户uid
+      uid: 0,
       chatterUid: -1,    // user id of the chatter
       websocket: null
     }
@@ -68,9 +71,27 @@ export default {
           message: this.inputMessage,
           send: true
         });
-        // TODO: 向后端发送消息
-        // Use web socket to send message to the server
-        this.websocket.send(this.inputMessage);
+        if (this.isRobot) {   // Send message to the chat bot
+          this.$axios.patch(api.chatWithBot, {
+            "input": this.inputMessage,
+            "chatbot": "dialogflow",
+            "session": this.uid
+          }).then(newMessage => {
+            // Delay for a random amount of time
+            setTimeout(() => {
+              this.messageList.push({
+                message: newMessage,
+                send: false
+              })
+            }, (Math.floor(Math.random() * 5)) * 1000);
+          }).catch(err => {
+            console.log(err);
+            this.$message.error("Error. Please try again.");
+          })
+        } else {  // Send message to human user
+          // Use web socket to send message to the server
+          this.websocket.send(this.inputMessage);
+        }
         this.inputMessage = '';   // Clear input box
         // Disable the input box and send button until a new message is received
         this.canSend = false;
@@ -97,6 +118,7 @@ export default {
         this.initWebSocket(chatterUid);
       } else {  // Else, call chat bot API and start chatting
         // TODO: call chat bot API and start chatting
+
       }
     },
     // Initialize web socket, connect to the server, and start chatting
@@ -119,7 +141,6 @@ export default {
       }
 
       // Close the socket if the browser window is closed
-      //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
       window.onbeforeunload = function(){
         _this.websocket.close();
       }

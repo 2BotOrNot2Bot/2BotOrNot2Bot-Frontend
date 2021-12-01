@@ -1,3 +1,7 @@
+/**
+ * @Description: Configuration for Axios
+ * @author Tianyi(Lorena) Yan
+ */
 import Axios from 'axios'
 import { Loading, Message } from 'element-ui';
 var loading = null;

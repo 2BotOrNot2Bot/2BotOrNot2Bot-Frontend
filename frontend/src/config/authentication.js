@@ -1,5 +1,5 @@
 /**
- * @Description:
+ * @Description: functions for authentication
  * @author Tianyi(Lorena) Yan
  * @date 2021/11/2
  */

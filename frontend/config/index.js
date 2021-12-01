@@ -10,14 +10,14 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      // 配置后端代理
-      '/': {
+      // Backend proxy configuration
+      '/api': {
         target: 'http://localhost:8080',
         changeOrigin: true,
         secure: false,
         pathRewrite: {
           '^/v1': '/v1',
-        },
+        }
       }
     },
 

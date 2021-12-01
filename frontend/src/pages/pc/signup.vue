@@ -56,7 +56,10 @@ export default {
               let userid = user.uid;
               console.log(userid);
               // Sign up by calling sign up API of the backend
-              this.$axios.post(api.signup, {uid: userid}
+              this.$axios.post(api.signup,
+              {
+                uid: userid
+              }
               ).then(res => {
                 this.$message.success("Successfully sign up.");
                 setTimeout(() => {
@@ -131,7 +134,7 @@ export default {
 #signup-btn{
   width:100%;
   padding: 12px;
-  margin:30px 0px;
+  margin:30px 0;
 }
 .logo{
   width:100px;
