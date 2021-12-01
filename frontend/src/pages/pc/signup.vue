@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import api from "../../config/api";
 import {auth} from "../../main";
 import {createUserWithEmailAndPassword} from "firebase/auth";
 import {Message} from "element-ui";
@@ -46,20 +47,29 @@ export default {
       } else if (this.password !== this.confirm) {
         this.$message.error("Passwords do not match.");
       } else {
+        // Register with firebase
         createUserWithEmailAndPassword(auth, this.email, this.password)
           .then((userCredential) => {
             const user = userCredential.user;
-            console.log(user);
             user.getIdToken().then((result) => {
               sessionStorage.setItem('user_info', JSON.stringify({'id_token': result, 'email': this.email, 'uid': user.uid}));
+              let userid = user.uid;
+              console.log(userid);
+              // Sign up by calling sign up API of the backend
+              this.$axios.post(api.signup, {uid: userid}
+              ).then(res => {
+                this.$message.success("Successfully sign up.");
+                setTimeout(() => {
+                  this.$router.push('/pc/chat');
+                }, 2500);
+              }).catch(err => {
+                this.$message.error(err);
+                console.log(err)
+              })
             }).catch(err => {
               console.log(err.code, err.message);
               this.$message.error(err.message);
             })
-            this.$message.success("Successfully sign up.");
-            setTimeout(() => {
-              this.$router.push('/pc/chat');
-            }, 2500);
           })
           .catch((error) => {
             if (error.code === 'auth/email-already-in-use') {

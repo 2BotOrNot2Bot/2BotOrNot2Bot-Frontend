@@ -24,6 +24,7 @@
 <script>
 import {signInWithEmailAndPassword} from "firebase/auth";
 import {auth} from "../../main";
+import api from "../../config/api";
 export default {
   name: "login",
   data(){
@@ -43,17 +44,29 @@ export default {
             console.log(user);
             user.getIdToken().then((result) => {
               sessionStorage.setItem('user_info', JSON.stringify({'id_token': result, 'email': this.email, 'uid': user.uid}));
+              let userId = user.uid;
+              // ----- Call backend API to login -----
+              this.$axios.get(api.login, {params: {uid: userId}}).then((score) => {
+                sessionStorage.setItem('user_score', score);
+                this.$message.success("Successfully login.");
+                setTimeout(() => {
+                  this.$router.push('/pc/chat');
+                }, 2500);
+              }).catch(err => {
+                console.log(err);
+                this.$message.error(err);
+              })
             }).catch(err => {
               console.log(err.code, err.message);
               this.$message.error("Invalid email or password.");
             })
-            this.$message.success("Successfully login.");
-            setTimeout(() => {
-              this.$router.push('/pc/chat');
-            }, 2500);
           }).catch((error) => {
           console.log(error.code, error.message);
-          this.$message.error("Invalid email or password.");
+          if (error.code === "auth/user-not-found") {
+            this.$message.error("Unknown email address. Please register first!");
+          } else {
+            this.$message.error("Invalid email or password.");
+          }
         });
       }
     },

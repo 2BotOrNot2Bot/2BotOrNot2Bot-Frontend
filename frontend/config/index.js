@@ -11,14 +11,14 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       // 配置后端代理
-      // '/': {
-      //   target: 'http://localhost:8898',
-      //   changeOrigin: true,
-      //   secure: false,
-      //   pathRewrite: {
-      //     '^/v1': '/v1',
-      //   },
-      // }
+      '/': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: {
+          '^/v1': '/v1',
+        },
+      }
     },
 
     // Various Dev Server settings

@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import Axios from './config/axios'
 
 // Element-UI: https://element.eleme.cn/#/zh-CN/component/select
 import ElementUI from 'element-ui';
@@ -43,6 +44,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
+Vue.prototype.$axios = Axios
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

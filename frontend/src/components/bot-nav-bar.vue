@@ -18,7 +18,7 @@
       <el-dropdown-menu slot="dropdown">
 <!--        TODO: add user score-->
         <el-dropdown-item style="color: #000000ab;font-weight: 600;" disabled>{{userEmail}}</el-dropdown-item>
-        <el-dropdown-item style="color: #000000ab;" disabled divided>Your score: XXX</el-dropdown-item>
+        <el-dropdown-item style="color: #000000ab;" disabled divided>Your score: {{userScore}}</el-dropdown-item>
         <el-dropdown-item id="logout" :command="-1">Log out</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -58,14 +58,16 @@ export default {
   mounted() {
     this.isAuthenticated = isLogin()
     if (this.isAuthenticated) {
-      this.userEmail = getEmail()
+      this.userEmail = getEmail();
+      this.userScore = sessionStorage.getItem('user_score');
     }
   },
   data () {
     return {
       isAuthenticated: false,
       logoutDialog: false,
-      userEmail: ''
+      userEmail: '',
+      userScore: -1
     }
   },
   methods: {

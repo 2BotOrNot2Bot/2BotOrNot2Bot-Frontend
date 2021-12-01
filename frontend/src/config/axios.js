@@ -19,7 +19,14 @@ Axios.interceptors.request.use((config) => {
 
 Axios.interceptors.response.use((response) => {
   loading.close();
-  return Promise.resolve(response)
+  if (response.data.code === "000") {
+    return Promise.resolve(response.data.data)
+  } else {
+    if (response.data && response.data.message) {
+      Message.error(response.data.message)
+    }
+    return Promise.reject(response)
+  }
 }), (error) => {
   console.log(error);
   Message.error(error)

@@ -81,7 +81,7 @@ export default {
   components: {ChatScreen, BotNavBar},
   mounted() {
     this.$refs.body.style.height = "calc(100% - " + this.$refs.navbar.$el.clientHeight + 'px)';
-    this.timeRemain = 2;
+    this.timeRemain = 180;
     this.selfAvatarId = Math.floor(Math.random() * 5);
     this.showRules = true;
     // Randomly select a chatting window for chat bot (if it's 1, then choose left, 2 choose right)
