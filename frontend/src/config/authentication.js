@@ -5,7 +5,7 @@
  */
 
 function isLogin () {
-  return sessionStorage.getItem('user_info');
+  return sessionStorage.getItem('user_info') !== null;
 }
 
 function getIdToken () {

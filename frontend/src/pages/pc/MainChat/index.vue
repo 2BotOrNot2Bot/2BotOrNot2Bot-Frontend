@@ -78,7 +78,6 @@ import BotNavBar from "@/components/bot-nav-bar";
 import ChatScreen from "@/components/ChatMain/chat-screen";
 import api from "../../../config/api";
 import {getUid} from "../../../config/authentication";
-import {Loading} from "element-ui";
 export default {
   name: "index",
   components: {ChatScreen, BotNavBar},
@@ -89,6 +88,7 @@ export default {
     this.showRules = true;
     // Randomly select a chatting window for chat bot (if it's 1, then choose left, 2 choose right)
     this.isRobot = (Math.floor(Math.random() * 2) === 1);
+    // TODO: 如果是guest，怎么给个random uid？
     this.userId = getUid();
     console.log(this.isRobot? "left" : "right");
   },
@@ -103,7 +103,8 @@ export default {
       isRobot: true,   // Whether the left window is the chat bot,
       showHaveAnotherChat: false,
       guess: false,
-      userId: -1
+      userId: -1,
+      chatterId: null
     }
   },
   computed: {
@@ -132,9 +133,20 @@ export default {
       } else {
         let guessResult = ((this.answer === 1 && this.isRobot) || (this.answer === 2 && !this.isRobot));
         this.guess = guessResult;
-        // TODO: send the result and user id to the backend
-        this.chooseAnswer = false;
-        this.showHaveAnotherChat = true;
+        // TODO: 提交最终答案待测试
+        this.$axios.post(api.submitAnswer, {
+          "name": "dialogflow",
+          "result": guessResult,
+          "uid": this.uid
+        }).then(userNewScore => {
+          // Update user's score
+          sessionStorage.setItem('user_score', userNewScore);
+          this.chooseAnswer = false;
+          this.showHaveAnotherChat = true;
+        }).catch(err => {
+          console.log(err);
+          this.$message.error("Error submitting answer. Please contact admin.");
+        })
       }
     },
     startChat () {
@@ -144,45 +156,46 @@ export default {
       this.findOpponent();
     },
     findOpponent () {
+      // TODO 开始找opponent 待测试
       // Call API and tell the backend to start finding another user for this user to chat with
-      this.$axios.post(api.startFindOpponent, {
-        uid: this.userId
-      }).then(res => {
-        // Keep displaying loading until an opponent is found
-        let loading = Loading.service({
-          lock: true,
-          text: 'Finding another user for you to chat with...',
-          spinner: 'el-icon-loading',
-          background: 'white'
-        });
-        let chatterId = null;
-        // TODO 待测试
-        // Try to get opponent from the backend every second
-        while (chatterId === null) {
-          console.log(this.userId);
-          this.$axios.get(api.getOpponent, {params: {uid: this.userId}}).then(res => {
-            chatterId = res;
-          }).catch(err => {
-            console.log(err);
-          })
-          setTimeout(() => {
-          }, 1000);
-        }
-        loading.close();
-        // Tell 2 sub chatting windows that we can start chatting now
-        this.$refs.left.$emit("startChat", chatterId);
-        this.$refs.right.$emit("startChat", chatterId);
-        // Start counting down
-        this.countDown();
-      }).catch(err => {
-        console.log(err);
-      })
+      this.$refs.left.$emit("startChat", 20);
+      this.$refs.right.$emit("startChat", 20);
+      // this.$axios.post(api.startFindOpponent, {
+      //   uid: this.userId
+      // }).then(res => {
+      //   // TODO 每秒钟找opponent 待测试
+      //   // Try to get opponent from the backend every 2 seconds to see whether there is a match
+      //   // this.getOpponent();
+      //
+      //   // Tell 2 sub chatting windows that we can start chatting now
+      //   this.$refs.left.$emit("startChat", 20);
+      //   this.$refs.right.$emit("startChat", 20);
+      //   // Start counting down
+      //   this.countDown();
+      // }).catch(err => {
+      //   console.log(err);
+      //   this.$message.error("Connection error. " + err.data.msg + " Please try again later.");
+      //   setTimeout(() => {
+      //     this.$router.push("/pc/home");
+      //   }, 2000)
+      // })
     },
     goHome () {
       this.$router.push('/pc/home');
     },
     chat () {
       window.location.reload();
+    },
+    getOpponent () {
+      this.$axios.get(api.getOpponent, {params: {uid: this.userId}}).then(chatterId => {
+        if (chatterId !== null) {
+          this.chatterId = chatterId;
+        } else {
+          setTimeout(this.getOpponent, 2000);
+        }
+      }).catch(err => {
+        console.log(err);
+      })
     }
   }
 }

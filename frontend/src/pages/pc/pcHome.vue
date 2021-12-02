@@ -57,7 +57,7 @@ export default {
   methods: {
     gotoTest () {
       if (isLogin()) {
-        this.login();
+        this.chat();
       } else {
         this.chooseContinue = true;
       }
