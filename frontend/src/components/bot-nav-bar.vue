@@ -16,7 +16,6 @@
         <svg style="height: 70%;margin-right: 2rem;margin-left: 0.5rem;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><defs></defs><g id="图层_2" data-name="图层 2"><g id="图层_1-2" data-name="图层 1"><path class="cls-1" fill="#fff" d="M24,0A24,24,0,1,0,48,24,24,24,0,0,0,24,0Zm0,7.2a7.2,7.2,0,1,1-7.2,7.2A7.2,7.2,0,0,1,24,7.2Zm0,34.08A17.28,17.28,0,0,1,9.6,33.55c.07-4.77,9.6-7.39,14.4-7.39s14.33,2.62,14.4,7.39A17.28,17.28,0,0,1,24,41.28Z"/></g></g></svg>
       </span>
       <el-dropdown-menu slot="dropdown">
-<!--        TODO: add user score-->
         <el-dropdown-item style="color: #000000ab;font-weight: 600;" disabled>{{userEmail}}</el-dropdown-item>
         <el-dropdown-item style="color: #000000ab;" disabled divided>Your score: {{userScore}}</el-dropdown-item>
         <el-dropdown-item id="logout" :command="-1">Log out</el-dropdown-item>

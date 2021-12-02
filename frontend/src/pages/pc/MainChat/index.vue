@@ -76,6 +76,9 @@
 <script>
 import BotNavBar from "@/components/bot-nav-bar";
 import ChatScreen from "@/components/ChatMain/chat-screen";
+import api from "../../../config/api";
+import {getUid} from "../../../config/authentication";
+import {Loading} from "element-ui";
 export default {
   name: "index",
   components: {ChatScreen, BotNavBar},
@@ -86,6 +89,7 @@ export default {
     this.showRules = true;
     // Randomly select a chatting window for chat bot (if it's 1, then choose left, 2 choose right)
     this.isRobot = (Math.floor(Math.random() * 2) === 1);
+    this.userId = getUid();
     console.log(this.isRobot? "left" : "right");
   },
   data () {
@@ -98,7 +102,8 @@ export default {
       countInterval: '',
       isRobot: true,   // Whether the left window is the chat bot,
       showHaveAnotherChat: false,
-      guess: false
+      guess: false,
+      userId: -1
     }
   },
   computed: {
@@ -139,12 +144,39 @@ export default {
       this.findOpponent();
     },
     findOpponent () {
-      // TODO: 调后端API找opponent，每一秒钟发一次，直到收到chatterUid. uid小的那一方先发送消息
-      // TODO: 获得chatterUid之后，告诉相对应的窗口子组建：可以开始聊天了 & start counting down
-      this.$refs.left.$emit("startChat", 20);   // 把20改成收到的chatter uid
-      this.$refs.right.$emit("startChat", 20);  // 把20改成收到的chatter uid
-      // Start counting down
-      this.countDown();
+      // Call API and tell the backend to start finding another user for this user to chat with
+      this.$axios.post(api.startFindOpponent, {
+        uid: this.userId
+      }).then(res => {
+        // Keep displaying loading until an opponent is found
+        let loading = Loading.service({
+          lock: true,
+          text: 'Finding another user for you to chat with...',
+          spinner: 'el-icon-loading',
+          background: 'white'
+        });
+        let chatterId = null;
+        // TODO 待测试
+        // Try to get opponent from the backend every second
+        while (chatterId === null) {
+          console.log(this.userId);
+          this.$axios.get(api.getOpponent, {params: {uid: this.userId}}).then(res => {
+            chatterId = res;
+          }).catch(err => {
+            console.log(err);
+          })
+          setTimeout(() => {
+          }, 1000);
+        }
+        loading.close();
+        // Tell 2 sub chatting windows that we can start chatting now
+        this.$refs.left.$emit("startChat", chatterId);
+        this.$refs.right.$emit("startChat", chatterId);
+        // Start counting down
+        this.countDown();
+      }).catch(err => {
+        console.log(err);
+      })
     },
     goHome () {
       this.$router.push('/pc/home');
