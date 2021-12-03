@@ -1,7 +1,7 @@
 <!--@Description: Main window for chatting, including navigation bar and chat-screen-->
 <!--@author Tianyi(Lorena) Yan-->
 <template>
-  <div>
+  <div v-if="needReset">
 <!--    Initial dialog window for explaining the rules-->
     <vs-dialog prevent-close not-close v-model="showRules">
       <template>
@@ -62,7 +62,7 @@
         <h5>Want to start another chat?</h5>
       </template>
       <template #footer>
-        <vs-button block @click="chat">
+        <vs-button block @click="startAnotherChat">
           Yes
         </vs-button>
         <vs-button block border @click="goHome">
@@ -82,9 +82,11 @@ import {Loading} from "element-ui";
 export default {
   name: "index",
   components: {ChatScreen, BotNavBar},
+  inject: ['reload'],
   mounted() {
     this.$refs.body.style.height = "calc(100% - " + this.$refs.navbar.$el.clientHeight + 'px)';
-    this.timeRemain = 1;
+    // Define the total chatting duration to be 3 minutes
+    this.timeRemain = 180;
     this.selfAvatarId = Math.floor(Math.random() * 5);
     this.showRules = true;
     // Randomly select a chatting window for chat bot (if it's 1, then choose left, 2 choose right)
@@ -106,7 +108,8 @@ export default {
       guess: false,
       userId: null,
       chatterId: null,
-      loading: null
+      loading: null,
+      needReset: true
     }
   },
   computed: {
@@ -174,7 +177,7 @@ export default {
         lock: true,
         text: 'Finding another user to chat with...',
         spinner: 'el-icon-loading',
-        background: 'white'
+        background: 'rgba(0, 0, 0, 0.8)'
       })
       this.$axios.post(api.startFindOpponent, {
         uid: this.userId
@@ -193,8 +196,9 @@ export default {
     goHome () {
       this.$router.push('/pc/home');
     },
-    chat () {
-      window.location.reload();
+    startAnotherChat () {
+      // TODO start another chat
+      this.reload();
     },
     getOpponent () {
       this.$axios.get(api.getOpponent, {params: {uid: this.userId}}).then(chatterId => {
@@ -217,7 +221,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .chat {
   width: 50%;
 }

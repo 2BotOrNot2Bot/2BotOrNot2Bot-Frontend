@@ -53,8 +53,8 @@ export default {
       messageList: [],
       chatterAvatarId: 0,
       canSend: true,  // Whether the user should start the conversation first, and whether the user can send a new message now
-      uid: 0,
-      chatterUid: -1,    // user id of the chatter
+      uid: null,
+      chatterUid: null,    // user id of the chatter
       websocket: null
     }
   },
@@ -113,7 +113,6 @@ export default {
       }
     },
     startChat(chatterUid) {
-      console.log(this.uid, chatterUid);
       // Who has a smaller uid will start the conversation first
       this.canSend = this.uid < chatterUid;
       this.chatterUid = chatterUid;
@@ -161,8 +160,12 @@ export default {
 
       // Successfully connected to the server
       _this.websocket.onopen = function(event){
-        console.log("Successfully connected to the server");
         _this.$message.success("Successfully paired up!")
+      }
+
+      // Function for closing websocket
+      _this.websocket.onclose = function(){
+        _this.websocket.close();
       }
 
       // Close the socket if the browser window is closed
@@ -171,12 +174,10 @@ export default {
       }
     },
     stopChat() {
-      // Function for closing the connection with the server
+      // Close the websocket
+      let _this = this;
       if (this.websocket !== null) {
-        let _this = this;
-        this.websocket.onclose = function(){
-          _this.websocket.close();
-        }
+        _this.websocket.close();
       }
     }
   }
