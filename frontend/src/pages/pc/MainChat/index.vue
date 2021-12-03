@@ -78,6 +78,7 @@ import BotNavBar from "@/components/bot-nav-bar";
 import ChatScreen from "@/components/ChatMain/chat-screen";
 import api from "../../../config/api";
 import {getUid} from "../../../config/authentication";
+import {Loading} from "element-ui";
 export default {
   name: "index",
   components: {ChatScreen, BotNavBar},
@@ -133,17 +134,25 @@ export default {
       } else {
         let guessResult = ((this.answer === 1 && this.isRobot) || (this.answer === 2 && !this.isRobot));
         this.guess = guessResult;
+        let loading = Loading.service({
+          lock: true,
+          text: 'Submitting answer...',
+          spinner: 'el-icon-loading',
+          background: 'white'
+        })
         // TODO: 提交最终答案待测试
         this.$axios.post(api.submitAnswer, {
           "name": "dialogflow",
           "result": guessResult,
           "uid": this.uid
         }).then(userNewScore => {
+          loading.close();
           // Update user's score
           sessionStorage.setItem('user_score', userNewScore);
           this.chooseAnswer = false;
           this.showHaveAnotherChat = true;
         }).catch(err => {
+          loading.close();
           console.log(err);
           this.$message.error("Error submitting answer. Please contact admin.");
         })
@@ -160,25 +169,32 @@ export default {
       // Call API and tell the backend to start finding another user for this user to chat with
       this.$refs.left.$emit("startChat", 20);
       this.$refs.right.$emit("startChat", 20);
-      // this.$axios.post(api.startFindOpponent, {
-      //   uid: this.userId
-      // }).then(res => {
-      //   // TODO 每秒钟找opponent 待测试
-      //   // Try to get opponent from the backend every 2 seconds to see whether there is a match
-      //   // this.getOpponent();
-      //
-      //   // Tell 2 sub chatting windows that we can start chatting now
-      //   this.$refs.left.$emit("startChat", 20);
-      //   this.$refs.right.$emit("startChat", 20);
-      //   // Start counting down
-      //   this.countDown();
-      // }).catch(err => {
-      //   console.log(err);
-      //   this.$message.error("Connection error. " + err.data.msg + " Please try again later.");
-      //   setTimeout(() => {
-      //     this.$router.push("/pc/home");
-      //   }, 2000)
-      // })
+      let loading = Loading.service({
+        lock: true,
+        text: 'Finding another user to chat with...',
+        spinner: 'el-icon-loading',
+        background: 'white'
+      })
+      this.$axios.post(api.startFindOpponent, {
+        uid: this.userId
+      }).then(res => {
+        // TODO 每秒钟找opponent 待测试
+        // Try to get opponent from the backend every 2 seconds to see whether there is a match
+        this.getOpponent();
+        loading.close();
+        // Tell 2 sub chatting windows that we can start chatting now
+        this.$refs.left.$emit("startChat", 20);
+        this.$refs.right.$emit("startChat", 20);
+        // Start counting down
+        this.countDown();
+      }).catch(err => {
+        loading.close();
+        console.log(err);
+        this.$message.error("Connection error. " + err.data.msg + " Please try again later.");
+        setTimeout(() => {
+          this.$router.push("/pc/home");
+        }, 2000)
+      })
     },
     goHome () {
       this.$router.push('/pc/home');

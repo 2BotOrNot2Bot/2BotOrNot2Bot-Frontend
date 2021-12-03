@@ -30,7 +30,7 @@
 import api from "../../config/api";
 import {auth} from "../../main";
 import {createUserWithEmailAndPassword} from "firebase/auth";
-import {Message} from "element-ui";
+import {Loading, Message} from "element-ui";
 export default {
   name: "signup",
   data(){
@@ -48,6 +48,12 @@ export default {
         this.$message.error("Passwords do not match.");
       } else {
         // Register with firebase
+        let loading = Loading.service({
+          lock: true,
+          text: 'Loading...',
+          spinner: 'el-icon-loading',
+          background: 'white'
+        })
         createUserWithEmailAndPassword(auth, this.email, this.password)
           .then((userCredential) => {
             const user = userCredential.user;
@@ -61,20 +67,24 @@ export default {
                 uid: userid
               }
               ).then(res => {
+                loading.close();
                 this.$message.success("Successfully sign up.");
                 setTimeout(() => {
                   this.$router.push('/pc/chat');
                 }, 2500);
               }).catch(err => {
+                loading.close();
                 this.$message.error(err);
                 console.log(err)
               })
             }).catch(err => {
+              loading.close();
               console.log(err.code, err.message);
               this.$message.error(err.message);
             })
           })
           .catch((error) => {
+            loading.close();
             if (error.code === 'auth/email-already-in-use') {
               Message.error("Email has already been used. Please try log in. Jumping to log in page now...")
               setTimeout(() => {

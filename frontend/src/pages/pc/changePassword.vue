@@ -17,6 +17,7 @@
 
 <script>
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import {Loading} from "element-ui";
 export default {
   name: "changePassword",
   data(){
@@ -30,14 +31,22 @@ export default {
         this.$message.error("Please enter your email!")
       } else {
         const auth = getAuth();
+        let loading = Loading.service({
+          lock: true,
+          text: 'Sending link for resetting password...',
+          spinner: 'el-icon-loading',
+          background: 'white'
+        })
         sendPasswordResetEmail(auth, this.email)
           .then(() => {
+            loading.close();
             this.$message.success("Link for resetting password has been sent! Please check your email. Going back to login page...")
             setTimeout(() => {
               this.$router.push('/pc/login');
             }, 2500);
           })
           .catch((error) => {
+            loading.close();
             const errorCode = error.code;
             if (errorCode === 'auth/invalid-email') {
               this.$message.error("The email address is invalid. Please try again.");
