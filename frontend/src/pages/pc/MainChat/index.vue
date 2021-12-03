@@ -109,7 +109,8 @@ export default {
       userId: null,
       chatterId: null,
       loading: null,
-      needReset: true
+      needReset: true,
+      chatBotName: null
     }
   },
   computed: {
@@ -127,8 +128,10 @@ export default {
           clearInterval(this.countInterval);
           this.chooseAnswer = true;
           // Tell both chatting windows that we need to stop chatting: close websocket
-          if (this.$refs.left !== null && this.$refs.right !== null) {
+          if (this.$refs.left !== null) {
             this.$refs.left.$emit("stopChat");
+          }
+          if (this.$refs.right !== null) {
             this.$refs.right.$emit("stopChat");
           }
         }
@@ -147,7 +150,7 @@ export default {
           background: 'white'
         })
         this.$axios.post(api.submitAnswer, {
-          'name': "dialogflow",
+          'name': this.chatBotName,
           'result': guessResult,
           'uid': this.userId
         }).then(userNewScore => {
@@ -197,17 +200,17 @@ export default {
       this.$router.push('/pc/home');
     },
     startAnotherChat () {
-      // TODO start another chat
       this.reload();
     },
     getOpponent () {
-      this.$axios.get(api.getOpponent, {params: {uid: this.userId}}).then(chatterId => {
-        if (chatterId !== null) {
-          this.chatterId = chatterId;
+      this.$axios.get(api.getOpponent, {params: {uid: this.userId}}).then(res => {
+        if (res !== null) {
+          this.chatterId = res.first;
+          this.chatBotName = res.second;
           this.loading.close();
           // Tell 2 sub chatting windows that we can start chatting now
-          this.$refs.left.$emit("startChat", this.chatterId);
-          this.$refs.right.$emit("startChat", this.chatterId);
+          this.$refs.left.$emit("startChat", {chatterId: this.chatterId, chatBotName: this.chatBotName});
+          this.$refs.right.$emit("startChat", {chatterId: this.chatterId, chatBotName: this.chatBotName});
           // Start counting down
           this.countDown();
         } else {
