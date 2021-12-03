@@ -77,14 +77,14 @@
 import BotNavBar from "@/components/bot-nav-bar";
 import ChatScreen from "@/components/ChatMain/chat-screen";
 import api from "../../../config/api";
-import {getUid} from "../../../config/authentication";
+import {getUid, isLogin} from "../../../config/authentication";
 import {Loading} from "element-ui";
 export default {
   name: "index",
   components: {ChatScreen, BotNavBar},
   mounted() {
     this.$refs.body.style.height = "calc(100% - " + this.$refs.navbar.$el.clientHeight + 'px)';
-    this.timeRemain = 180;
+    this.timeRemain = 1;
     this.selfAvatarId = Math.floor(Math.random() * 5);
     this.showRules = true;
     // Randomly select a chatting window for chat bot (if it's 1, then choose left, 2 choose right)
@@ -104,8 +104,9 @@ export default {
       isRobot: true,   // Whether the left window is the chat bot,
       showHaveAnotherChat: false,
       guess: false,
-      userId: -1,
-      chatterId: null
+      userId: null,
+      chatterId: null,
+      loading: null
     }
   },
   computed: {
@@ -123,8 +124,10 @@ export default {
           clearInterval(this.countInterval);
           this.chooseAnswer = true;
           // Tell both chatting windows that we need to stop chatting: close websocket
-          this.$refs.left.$emit("stopChat");
-          this.$refs.right.$emit("stopChat");
+          if (this.$refs.left !== null && this.$refs.right !== null) {
+            this.$refs.left.$emit("stopChat");
+            this.$refs.right.$emit("stopChat");
+          }
         }
       }, 1000);
     },
@@ -134,25 +137,26 @@ export default {
       } else {
         let guessResult = ((this.answer === 1 && this.isRobot) || (this.answer === 2 && !this.isRobot));
         this.guess = guessResult;
-        let loading = Loading.service({
+        this.loading = Loading.service({
           lock: true,
           text: 'Submitting answer...',
           spinner: 'el-icon-loading',
           background: 'white'
         })
-        // TODO: 提交最终答案待测试
         this.$axios.post(api.submitAnswer, {
-          "name": "dialogflow",
-          "result": guessResult,
-          "uid": this.uid
+          'name': "dialogflow",
+          'result': guessResult,
+          'uid': this.userId
         }).then(userNewScore => {
-          loading.close();
+          this.loading.close();
           // Update user's score
-          sessionStorage.setItem('user_score', userNewScore);
+          if (isLogin()) {
+            sessionStorage.setItem('user_score', userNewScore);
+          }
           this.chooseAnswer = false;
           this.showHaveAnotherChat = true;
         }).catch(err => {
-          loading.close();
+          this.loading.close();
           console.log(err);
           this.$message.error("Error submitting answer. Please contact admin.");
         })
@@ -165,11 +169,8 @@ export default {
       this.findOpponent();
     },
     findOpponent () {
-      // TODO 开始找opponent 待测试
       // Call API and tell the backend to start finding another user for this user to chat with
-      this.$refs.left.$emit("startChat", 20);
-      this.$refs.right.$emit("startChat", 20);
-      let loading = Loading.service({
+      this.loading = Loading.service({
         lock: true,
         text: 'Finding another user to chat with...',
         spinner: 'el-icon-loading',
@@ -178,17 +179,10 @@ export default {
       this.$axios.post(api.startFindOpponent, {
         uid: this.userId
       }).then(res => {
-        // TODO 每秒钟找opponent 待测试
         // Try to get opponent from the backend every 2 seconds to see whether there is a match
         this.getOpponent();
-        loading.close();
-        // Tell 2 sub chatting windows that we can start chatting now
-        this.$refs.left.$emit("startChat", 20);
-        this.$refs.right.$emit("startChat", 20);
-        // Start counting down
-        this.countDown();
       }).catch(err => {
-        loading.close();
+        this.loading.close();
         console.log(err);
         this.$message.error("Connection error. " + err.data.msg + " Please try again later.");
         setTimeout(() => {
@@ -206,6 +200,12 @@ export default {
       this.$axios.get(api.getOpponent, {params: {uid: this.userId}}).then(chatterId => {
         if (chatterId !== null) {
           this.chatterId = chatterId;
+          this.loading.close();
+          // Tell 2 sub chatting windows that we can start chatting now
+          this.$refs.left.$emit("startChat", this.chatterId);
+          this.$refs.right.$emit("startChat", this.chatterId);
+          // Start counting down
+          this.countDown();
         } else {
           setTimeout(this.getOpponent, 2000);
         }
