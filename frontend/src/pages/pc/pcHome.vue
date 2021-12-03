@@ -8,7 +8,10 @@
       <div class="backgroundImg" :style="{background: 'url('+backgroundRight+') no-repeat fixed center center', backgroundSize: 'cover', float: 'right'}"/>
     </div>
     <div style="padding-top: 5rem">
-      <bot-nav-bar style="margin: 0 5rem;"><span @click="gotoTest">START TEST</span></bot-nav-bar>
+      <bot-nav-bar style="margin: 0 5rem;">
+        <span @click="showAbout = true">ABOUT</span>
+        <span @click="gotoTest">START TEST</span>
+      </bot-nav-bar>
     </div>
     <div id="startBtn" @click="gotoTest">
       <div id="btnBody">
@@ -38,6 +41,16 @@
         </vs-button>
       </template>
     </vs-dialog>
+    <!--    About-->
+    <vs-dialog v-model="showAbout">
+      <template>
+        <h4 class="not-margin">About us</h4>
+        <h5 style="word-break: break-word;max-width: 30rem;">
+          The research and development of modern NLP (natural language processing) models, particularly chatbots, necessitates a reliable and convenient tool to evaluate their human-likeness and linguistic fluency. To that end, the Turing Test as a classic and time-tested evaluation method, can be deployed at a large scale to allow both companies and researchers to test their chatbots with ease.<br/><br/>
+          We make Turing Test easy for chatbot developers by building a platform that provides online chatting experience for end-users in order to gather their feedback. By randomly pairing users with either the chatbot or another human, we guarantee the effectiveness of our metrics.
+        </h5>
+      </template>
+    </vs-dialog>
   </div>
 </template>
 
@@ -51,7 +64,8 @@ export default {
     return {
       backgroundLeft: require('@/assets/home_left.jpg'),
       backgroundRight: require('@/assets/home_right.jpg'),
-      chooseContinue: false
+      chooseContinue: false,
+      showAbout: false
     }
   },
   methods: {

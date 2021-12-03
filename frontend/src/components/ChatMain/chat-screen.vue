@@ -22,7 +22,7 @@
 
 <script>
 import MessageTag from "./message-tag";
-import {getUid} from "../../config/authentication";
+import {getUid, isLogin} from "../../config/authentication";
 import api from "../../config/api";
 import getRandomMessage from "../../config/randomMessageList";
 export default {
@@ -32,7 +32,9 @@ export default {
     this.$refs.displayMessages.style.height = 'calc(100% - ' + this.$refs.bottom.offsetHeight + 'px - 3rem)';
     this.$refs.bottom.style.width = 'calc(50% - 4rem)';
     this.chatterAvatarId = Math.floor(Math.random() * 5);
-    this.uid = getUid();
+    if (isLogin()) {
+      this.uid = getUid();
+    }
     let that = this;
     this.$nextTick(function() {
       this.$on('startChat', function(info) {
@@ -53,7 +55,7 @@ export default {
       messageList: [],
       chatterAvatarId: 0,
       canSend: true,  // Whether the user should start the conversation first, and whether the user can send a new message now
-      uid: null,
+      uid: 0,
       chatterUid: null,    // user id of the chatter
       websocket: null,
       chatBotName: null,

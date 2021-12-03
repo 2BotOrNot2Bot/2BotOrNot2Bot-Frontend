@@ -13,6 +13,9 @@
         </h5>
       </template>
       <template #footer>
+        <vs-button block border @click="goHome">
+          Go back to home page
+        </vs-button>
         <vs-button block @click="startChat">
           Start chatting!
         </vs-button>
@@ -91,8 +94,9 @@ export default {
     this.showRules = true;
     // Randomly select a chatting window for chat bot (if it's 1, then choose left, 2 choose right)
     this.isRobot = (Math.floor(Math.random() * 2) === 1);
-    // TODO: 如果是guest，怎么给个random uid？
-    this.userId = getUid();
+    if (isLogin()) {
+      this.uid = getUid();
+    }
     console.log(this.isRobot? "left" : "right");
   },
   data () {
@@ -182,6 +186,7 @@ export default {
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.8)'
       })
+      // TODO 给guest random uid
       this.$axios.post(api.startFindOpponent, {
         uid: this.userId
       }).then(res => {
@@ -230,6 +235,9 @@ export default {
 }
 #body {
   width: 100%;
+  display: flex;
+}
+/deep/.vs-dialog__footer {
   display: flex;
 }
 </style>
