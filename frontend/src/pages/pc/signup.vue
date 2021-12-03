@@ -60,7 +60,6 @@ export default {
             user.getIdToken().then((result) => {
               sessionStorage.setItem('user_info', JSON.stringify({'id_token': result, 'email': this.email, 'uid': user.uid}));
               let userid = user.uid;
-              console.log(userid);
               // Sign up by calling sign up API of the backend
               this.$axios.post(api.signup,
               {

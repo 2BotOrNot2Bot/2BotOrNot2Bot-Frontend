@@ -1,18 +1,46 @@
-# Vue-Spring Template
+# 2BotOrNot2Bot Frontend
+
+##  Table of Contents
+- [Basics](#basics)
+- [Steps](#steps)
+- [Project Structure](#project-structure)
+- [Credit](#credit)
+
+## Basics
+1. The frontend is developed using **Vue.js**
+2. Requests and Responses are sent and handled through **Axios**
+3. Modules are maintained and bundled with **Webpack**
+4. Basic user authentication is handled through firebase
+5. 2 UI component libraries are used: **Element** and **Vuesax**
 
 ## Steps
+1. git clone git@github.com:2BotOrNot2Bot/2BotOrNot2Bot-Frontend.git
+2. cd frontend
+3. npm install
+4. After start running the backend: npm start
 
-1. git clone git@github.com:Lorenayannnnn/VueSpringTemplate.git
-2. frontend:
-	1. cd frontend
-	2. npm install
-	3. directory structure:
-		1. assets
-		2. components
-		3. pages (mobile & pc)
-		4. config: support axios for sending requests
-		5. router
-3. backend: Java-spring framework
+## Project Structure
+- assets: images and stylesheets for element ui components
+- components: small components that are reused in larger pages
+  - Sub-windows for chatting
+  - Tags for displaying chatbot's statistics and messages
+  - Navigation bar and links
+- config: 
+  - Maintain names of backend API
+  - Code for Firebase authentication
+  - Axios configuration
+  - Firebase configuration
+- pages:
+  - Bigger chatting screen containing 2 smaller chatting windows
+  - User authentication: login, sign up, change password
+  - Main home page
+- router: Configuration for Vue router
 
+## Credit
+### Developer:
+**Tianyi(Lorena) Yan** / **Furong(Flora) Jia**
 
-## Have fun coding!🥳🥳
+### UI Designer:
+**Yibo Wen**
+
+## Enjoy!🥳🥳
