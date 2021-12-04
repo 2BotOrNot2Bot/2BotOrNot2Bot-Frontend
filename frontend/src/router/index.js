@@ -26,6 +26,10 @@ const router = new Router({
   mode: 'history',
   routes: [
     {
+      path: '',
+      redirect: '/pc/home'
+    },
+    {
       path: '/pc',
       name: 'pcIndex',
       component: PcIndex,
