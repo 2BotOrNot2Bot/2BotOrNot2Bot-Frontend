@@ -1,14 +1,13 @@
+/**
+ * @Description: Configuration for Axios
+ * @author Tianyi(Lorena) Yan
+ */
 import Axios from 'axios'
-import { Loading, Message } from 'element-ui';
-var loading = null;
+import { Message } from 'element-ui';
 
 Axios.interceptors.request.use((config) => {
-  loading = Loading.service({
-    lock: true,
-    text: 'Loading...',
-    spinner: 'el-icon-loading',
-    background: 'white'
-  })
+  config.headers['Authentication'] = 'Bearer ' + sessionStorage.getItem('id_token');
+
   return config;
 }), (error) => {
   Message.error(error)
@@ -17,8 +16,14 @@ Axios.interceptors.request.use((config) => {
 }
 
 Axios.interceptors.response.use((response) => {
-  loading.close();
-  return Promise.resolve(response)
+  if (response.data.code === "000") {
+    return Promise.resolve(response.data.data)
+  } else {
+    if (response.data && response.data.message) {
+      Message.error(response.data.message)
+    }
+    return Promise.reject(response)
+  }
 }), (error) => {
   console.log(error);
   Message.error(error)

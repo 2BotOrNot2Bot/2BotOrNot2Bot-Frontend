@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-// PC端
+// PC
 const PcIndex = () => import('@/pages/pcIndex')
 const PcHome = () => import('@/pages/pc/pcHome')
 const MainChatIndex = () => import('@/pages/pc/MainChat/index')
@@ -9,13 +9,10 @@ const pcLogin = () => import('@/pages/pc/login');
 const pcSignup = () => import('@/pages/pc/signup');
 const pcPassword = () => import('@/pages/pc/changePassword')
 
-// 移动端
-const MobileIndex = () => import('@/pages/mobileIndex')
-const MobileHome = () => import('@/pages/mobile/mobileHome')
 
 Vue.use(Router)
 
-// 避免重复路由
+// Avoid repetitive routing
 const originalPush = Router.prototype.push;
 Router.prototype.push = function replace(location) {
   return originalReplace.call(this, location).catch(err => err);
@@ -25,7 +22,7 @@ Router.prototype.replace = function replace(location) {
   return originalReplace.call(this, location).catch(err => err);
 };
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   routes: [
     {
@@ -53,16 +50,8 @@ export default new Router({
         name:'pcChangePassword',
         component: pcPassword
       }]
-    },
-    {
-      path: '/mobile',
-      name: 'mobileIndex',
-      component: MobileIndex,
-      children: [{
-        path: 'home',
-        name: 'mobileHome',
-        component: MobileHome
-      }]
     }
   ]
 })
+
+export default router

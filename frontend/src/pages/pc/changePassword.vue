@@ -8,14 +8,16 @@
         <p>Your Email:</p>
         <el-input class="input" v-model="email" placeholder="yibo@usc.edu"></el-input>
       </div>
-
-      <el-button id="signin-btn" type="primary" v-on:click="submit()">Send Password Reset Link</el-button>
+      <el-button class="signin-btn" type="primary" v-on:click="sendResetLink()">Send Password Reset Link</el-button>
+      <el-button class="signin-btn" v-on:click="goToLogin()">Go back to login page</el-button>
     </div>
   </div>
 </div>
 </template>
 
 <script>
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import {Loading} from "element-ui";
 export default {
   name: "changePassword",
   data(){
@@ -24,7 +26,46 @@ export default {
     }
   },
   methods: {
-    submit(){},
+    sendResetLink(){
+      if (this.email.trim() === '') {
+        this.$message.error("Please enter your email!")
+      } else {
+        const auth = getAuth();
+        let loading = Loading.service({
+          lock: true,
+          text: 'Sending link for resetting password...',
+          spinner: 'el-icon-loading',
+          background: 'white'
+        })
+        sendPasswordResetEmail(auth, this.email)
+          .then(() => {
+            loading.close();
+            this.$message.success("Link for resetting password has been sent! Please check your email. Going back to login page...")
+            setTimeout(() => {
+              this.$router.push('/pc/login');
+            }, 2500);
+          })
+          .catch((error) => {
+            loading.close();
+            const errorCode = error.code;
+            if (errorCode === 'auth/invalid-email') {
+              this.$message.error("The email address is invalid. Please try again.");
+            } else if (errorCode === 'auth/user-not-found') {
+              this.$message.error("The email address is not registered. Jumping to register page...");
+              setTimeout(() => {
+                this.$router.push('/pc/signup');
+              }, 2500);
+            } else {
+              const errorMessage = error.message;
+              this.$message.error(errorCode + ' ' + errorMessage)
+              console.log(errorCode, errorMessage);
+            }
+          });
+      }
+    },
+    goToLogin () {
+      this.$router.push('/pc/login')
+    }
   }
 }
 </script>
@@ -38,12 +79,12 @@ export default {
   z-index:1;
 }
 #login-bg{
-  width:35%;
-  height:40%;
-  margin: 0px auto;
+  width: 35%;
+  height: 50%;
+  margin: 0 auto;
   background: inherit;
   position: relative;
-  top:25%;
+  top: 20%;
 }
 #login-bg > div{
   color:lightgray;
@@ -70,14 +111,14 @@ export default {
   width:100px;
   height:100px;
   position:absolute;
-  right:-4%;
+  right:-9%;
   top:-4%;
   color:white;
   z-index:3;
 }
-#signin-btn{
+.signin-btn{
   width:100%;
   padding: 12px;
-  margin:30px 0px;
+  margin: 15px 0 0;
 }
 </style>

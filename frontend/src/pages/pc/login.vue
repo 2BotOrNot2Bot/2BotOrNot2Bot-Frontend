@@ -1,39 +1,84 @@
-<template>
-<div id="bg">
-  <div id="login-bg">
-    <img src="../../assets/logo-b.svg" alt="logo" class="logo">
-    <div style="margin:0px auto;">
-      <h1 style="margin:0px;color:white;font-size:50px;">Sign in</h1>
-      <p>New user? <router-link to="/pc/signup"><span style="color:#FF9F1C; text-decoration: underline;">Create an account</span></router-link></p>
-      <div>
-        <p>Email:</p>
-        <el-input class="input" v-model="input.email" placeholder="yibo@usc.edu"></el-input>
-      </div>
-      <div>
-        <p>Password:</p>
-        <el-input class="input" v-model="input.password" placeholder="test1234" show-password></el-input>
-        <p>Forget Your Password? <router-link to="/pc/changePassword"><span style="color:#FF9F1C; text-decoration: underline;"> Reset Password</span></router-link></p>
-      </div>
 
-      <el-button id="signin-btn" type="primary" @click="signin">Sign In</el-button>
+<template>
+  <div id="bg">
+    <div id="login-bg">
+      <img src="../../assets/logo-b.svg" alt="logo" class="logo">
+      <div style="margin:0 auto;">
+        <h1 style="margin:0;color:white;font-size:50px;">Sign in</h1>
+        <p>New user? <router-link to="/pc/signup"><span style="color:#FF9F1C; text-decoration: underline;">Create an account</span></router-link></p>
+        <div>
+          <p>Email:</p>
+          <el-input class="input" v-model="email" placeholder="yibo@usc.edu"></el-input>
+        </div>
+        <div>
+          <p>Password:</p>
+          <el-input class="input" v-model="password" placeholder="test1234" show-password></el-input>
+          <p>Forget Your Password? <router-link to="/pc/changePassword"><span style="color:#FF9F1C; text-decoration: underline;"> Reset Password</span></router-link></p>
+        </div>
+        <el-button id="signin-btn" type="primary" @click="signIn">Sign In</el-button>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
+import {signInWithEmailAndPassword} from "firebase/auth";
+import {auth} from "../../main";
+import api from "../../config/api";
+import {Loading} from "element-ui";
 export default {
   name: "login",
   data(){
     return{
-      input:{
-        email:'',
-        password:'',
-      }
+      email:'',
+      password:''
     }
   },
   methods: {
-    signin(){},
+    signIn(){
+      if (this.email === '' || this.password === '') {
+        this.$message.error("Please enter your email and your password.")
+      } else {
+        let loading = Loading.service({
+          lock: true,
+          text: 'Loading...',
+          spinner: 'el-icon-loading',
+          background: 'white'
+        })
+        signInWithEmailAndPassword(auth, this.email, this.password).then((userCredential) => {
+          const user = userCredential.user;
+          user.getIdToken().then((result) => {
+            sessionStorage.setItem('user_info', JSON.stringify({'id_token': result, 'email': this.email, 'uid': user.uid}));
+            let userId = user.uid;
+            // ----- Call backend API to login -----
+            this.$axios.get(api.login, {params: {uid: userId}}).then((score) => {
+              loading.close();
+              sessionStorage.setItem('user_score', score);
+              this.$message.success("Successfully login.");
+              setTimeout(() => {
+                this.$router.push('/pc/chat');
+              }, 2500);
+            }).catch(err => {
+              loading.close();
+              console.log(err);
+              this.$message.error(err);
+            })
+          }).catch(err => {
+            loading.close();
+            console.log(err.code, err.message);
+            this.$message.error("Invalid email or password.");
+          })
+          }).catch((error) => {
+            loading.close();
+            console.log(error.code, error.message);
+            if (error.code === "auth/user-not-found") {
+              this.$message.error("Unknown email address. Please register first!");
+            } else {
+              this.$message.error("Invalid email or password.");
+            }
+          });
+      }
+    },
   }
 }
 </script>

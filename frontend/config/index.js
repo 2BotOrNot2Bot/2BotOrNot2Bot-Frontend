@@ -10,20 +10,20 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      // 配置后端代理
-      // '/': {
-      //   target: 'http://localhost:8898',
-      //   changeOrigin: true,
-      //   secure: false,
-      //   pathRewrite: {
-      //     '^/v1': '/v1',
-      //   },
-      // }
+      // Backend proxy configuration
+      '/api': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: {
+          '^/v1': '/v1',
+        }
+      }
     },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
-    port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    port: 8848, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,
