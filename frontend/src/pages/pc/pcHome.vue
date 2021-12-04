@@ -2,7 +2,7 @@
 <!--@author Tianyi(Lorena) Yan-->
 
 <template>
-  <div>
+  <div ref="main">
     <div id="background">
       <img ref="background" class="backgroundImg" :src="background" alt=""/>
     </div>
@@ -71,10 +71,13 @@ export default {
       text: 'Loading...',
       background: 'white'
     });
+    let that = this;
+    this.$refs.main.style.display = 'none';
     let src = this.$refs.background.src;
     let newImg = new Image()
     newImg.src = src
     newImg.onload = function(){
+      that.$refs.main.style.display = 'block';
       loading.close();
     }
   },
