@@ -90,7 +90,7 @@ export default {
               })
               this.canSend = true;
               this.placeholder = "Please enter your message";
-            }, (Math.floor(Math.random() * 3) + 1) * 1000);
+            }, (Math.floor(Math.random() * 3) + 3) * 1000);
           }).catch(err => {
             console.log(err);
             this.$message.error("Error. Please try again.");
