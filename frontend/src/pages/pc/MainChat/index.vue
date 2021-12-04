@@ -95,7 +95,7 @@ export default {
     // Randomly select a chatting window for chat bot (if it's 1, then choose left, 2 choose right)
     this.isRobot = (Math.floor(Math.random() * 2) === 1);
     if (isLogin()) {
-      this.uid = getUid();
+      this.userId = getUid();
     }
     console.log(this.isRobot? "left" : "right");
   },
@@ -156,7 +156,7 @@ export default {
         this.$axios.post(api.submitAnswer, {
           'name': this.chatBotName,
           'result': guessResult,
-          'uid': this.userId
+          'uid': isLogin() ? this.userId : null
         }).then(userNewScore => {
           this.loading.close();
           // Update user's score
@@ -186,10 +186,10 @@ export default {
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.8)'
       })
-      // TODO 给guest random uid
       this.$axios.post(api.startFindOpponent, {
         uid: this.userId
-      }).then(res => {
+      }).then(userId => {
+        this.userId = userId;
         // Try to get opponent from the backend every 2 seconds to see whether there is a match
         this.getOpponent();
       }).catch(err => {
@@ -214,8 +214,8 @@ export default {
           this.chatBotName = res.second;
           this.loading.close();
           // Tell 2 sub chatting windows that we can start chatting now
-          this.$refs.left.$emit("startChat", {chatterId: this.chatterId, chatBotName: this.chatBotName});
-          this.$refs.right.$emit("startChat", {chatterId: this.chatterId, chatBotName: this.chatBotName});
+          this.$refs.left.$emit("startChat", {chatterId: this.chatterId, chatBotName: this.chatBotName, uid: this.userId});
+          this.$refs.right.$emit("startChat", {chatterId: this.chatterId, chatBotName: this.chatBotName, uid: this.userId});
           // Start counting down
           this.countDown();
         } else {
