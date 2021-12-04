@@ -13,10 +13,6 @@ const pcPassword = () => import('@/pages/pc/changePassword')
 Vue.use(Router)
 
 // Avoid repetitive routing
-const originalPush = Router.prototype.push;
-Router.prototype.push = function replace(location) {
-  return originalReplace.call(this, location).catch(err => err);
-};
 const originalReplace = Router.prototype.replace;
 Router.prototype.replace = function replace(location) {
   return originalReplace.call(this, location).catch(err => err);
