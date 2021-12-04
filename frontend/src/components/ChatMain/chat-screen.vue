@@ -79,7 +79,7 @@ export default {
         if (this.isRobot) {   // Send message to the chat bot
           this.$axios.patch(api.chatWithBot, {
             'input': this.inputMessage,
-            'chatbot': "dialogflow",
+            'chatbot': this.chatBotName,
             'uid': this.uid
           }).then(newMessage => {
             // Delay for a random amount of time
@@ -90,7 +90,7 @@ export default {
               })
               this.canSend = true;
               this.placeholder = "Please enter your message";
-            }, (Math.floor(Math.random() * 5)) * 1000);
+            }, (Math.floor(Math.random() * 3) + 1) * 1000);
           }).catch(err => {
             console.log(err);
             this.$message.error("Error. Please try again.");

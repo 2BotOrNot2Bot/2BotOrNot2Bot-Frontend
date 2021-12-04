@@ -47,7 +47,6 @@ export default {
         })
         signInWithEmailAndPassword(auth, this.email, this.password).then((userCredential) => {
           const user = userCredential.user;
-          console.log(user);
           user.getIdToken().then((result) => {
             sessionStorage.setItem('user_info', JSON.stringify({'id_token': result, 'email': this.email, 'uid': user.uid}));
             let userId = user.uid;
