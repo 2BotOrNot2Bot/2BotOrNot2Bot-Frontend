@@ -22,7 +22,7 @@
 <!--      Brainshop-->
       <img v-else-if="name === 'brainshop'" style="left: 19%;right: 25%;top: 15px;position: absolute;width: 67%;" alt="" :src="brainshop"/>
 <!--      aichatbot-->
-      <img v-else-if="name === 'aichatbot'" style="left: 19%;right: 25%;top: 15px;position: absolute;width: 67%;" alt="" :src="aichatbot"/>
+      <img v-else-if="name === 'robomatic'" style="left: 19%;right: 25%;top: 20px;position: absolute;width: 60%;" alt="" :src="aichatbot"/>
     </div>
     <span>{{displayStats}}%</span>
   </div>

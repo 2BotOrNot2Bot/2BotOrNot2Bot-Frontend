@@ -4,8 +4,7 @@
 <template>
   <div>
     <div id="background">
-      <div class="backgroundImg" :style="{background: 'url('+backgroundLeft+') no-repeat fixed center center', backgroundSize: 'cover'}"/>
-      <div class="backgroundImg" :style="{background: 'url('+backgroundRight+') no-repeat fixed center center', backgroundSize: 'cover', float: 'right'}"/>
+      <img ref="background" class="backgroundImg" :src="background" alt=""/>
     </div>
     <div style="padding-top: 5rem">
       <bot-nav-bar style="margin: 0 5rem;">
@@ -60,13 +59,28 @@
 import stats from "../../components/Stats/stats";
 import BotNavBar from "@/components/bot-nav-bar";
 import {isLogin} from "../../config/authentication";
+import {Loading} from "element-ui";
 export default {
   name: "pcHome",
   components: {BotNavBar, stats},
+  mounted() {
+    // Display loading until all background images are loaded
+    let loading = Loading.service({
+      lock: true,
+      spinner: 'el-icon-loading',
+      text: 'Loading...',
+      background: 'white'
+    });
+    let src = this.$refs.background.src;
+    let newImg = new Image()
+    newImg.src = src
+    newImg.onload = function(){
+      loading.close();
+    }
+  },
   data () {
     return {
-      backgroundLeft: require('@/assets/home_left.jpg'),
-      backgroundRight: require('@/assets/home_right.jpg'),
+      background: require('@/assets/background.png'),
       chooseContinue: false,
       showAbout: false
     }
@@ -106,10 +120,12 @@ export default {
   height: 100%;
   z-index: -10;
   top: 0;
+  display: flex;
   .backgroundImg {
-    width: 50%;
-    display: inline-block;
-    height: 100%;
+    width: 100%;
+    display: block;
+    position: absolute;
+    min-width: 900px;
   }
 }
 #startBtn {
