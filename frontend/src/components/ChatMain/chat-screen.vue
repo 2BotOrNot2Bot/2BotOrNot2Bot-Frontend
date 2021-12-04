@@ -79,7 +79,7 @@ export default {
         if (this.isRobot) {   // Send message to the chat bot
           this.$axios.patch(api.chatWithBot, {
             'input': this.inputMessage,
-            'chatbot': "dialogflow",
+            'chatbot': this.chatBotName,
             'uid': this.uid
           }).then(newMessage => {
             // Delay for a random amount of time
