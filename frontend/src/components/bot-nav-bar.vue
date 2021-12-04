@@ -35,8 +35,6 @@
         </vs-button>
       </template>
     </vs-dialog>
-
-    <stats ref="stats"/>
   </div>
 </template>
 

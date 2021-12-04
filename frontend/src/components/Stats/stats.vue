@@ -5,10 +5,9 @@
   <div>
     <vs-dialog prevent-close v-model="showStats">
       <template v-if="botList.length > 0">
-<!--        TODO 需要三个bot-->
-        <stats-tag style="width: 30%" :rank="2" :stats="(botList[0].percentage * 100)" :name="botList[0].name"/>
+        <stats-tag style="width: 30%" :rank="2" :stats="(botList[1].percentage * 100)" :name="botList[1].name"/>
         <stats-tag style="width: 40%" :rank="1" :stats="(botList[0].percentage * 100)" :name="botList[0].name"/>
-        <stats-tag style="width: 25%" :rank="3" :stats="(botList[0].percentage * 100)" :name="botList[0].name"/>
+        <stats-tag style="width: 25%" :rank="3" :stats="(botList[2].percentage * 100)" :name="botList[2].name"/>
       </template>
     </vs-dialog>
   </div>
