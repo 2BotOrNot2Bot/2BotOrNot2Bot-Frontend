@@ -2,9 +2,9 @@ const randomMessage = [
   "Hey there!",
   "Hello",
   "Hi!",
-  "How are you?",
-  "HEY How you doin'?",
-  "Hi nice to meet you!"
+  "HEY",
+  "Hi nice to meet you!",
+  "Hello there!"
 ];
 
 export default function getRandomMessage () {

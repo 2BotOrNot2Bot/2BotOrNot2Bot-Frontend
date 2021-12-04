@@ -90,7 +90,7 @@ export default {
               })
               this.canSend = true;
               this.placeholder = "Please enter your message";
-            }, (Math.floor(Math.random() * 3) + 3) * 1000);
+            }, (newMessage.toString().length * 130));
           }).catch(err => {
             console.log(err);
             this.$message.error("Error. Please try again.");
@@ -136,14 +136,15 @@ export default {
         this.initWebSocket(this.chatterUid);
       } else {  // Else, call chat bot API and start chatting
         if (this.isRobot && !this.canSend) {
+          let randMsg = getRandomMessage();
           setTimeout(() => {
             this.messageList.push({
-              message: getRandomMessage(),
+              message: randMsg,
               send: false
             });
             this.canSend = true;
             this.placeholder = "Please enter your message";
-          }, 1000);
+          }, randMsg.length * 130);
         }
       }
     },
