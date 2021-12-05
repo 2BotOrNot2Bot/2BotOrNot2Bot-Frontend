@@ -7,11 +7,12 @@
 - [Credit](#credit)
 
 ## Basics
-1. The frontend is developed using **Vue.js**
-2. Requests and Responses are sent and handled through **Axios**
-3. Modules are maintained and bundled with **Webpack**
-4. Basic user authentication is handled through firebase
-5. 2 UI component libraries are used: **Element** and **Vuesax**
+1. Frontend is deployed on Firebase. Visit [botornot2bot-8e49c.web.app](https://botornot2bot-8e49c.web.app/pc/home)
+2. The frontend is developed using **Vue.js**
+3. Requests and Responses are sent and handled through **Axios**
+4. Modules are maintained and bundled with **Webpack**
+5. Basic user authentication is handled through firebase
+6. 2 UI component libraries are used: **Element** and **Vuesax**
 
 ## Steps
 1. git clone git@github.com:2BotOrNot2Bot/2BotOrNot2Bot-Frontend.git
