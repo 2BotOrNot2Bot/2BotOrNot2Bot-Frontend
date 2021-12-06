@@ -124,6 +124,7 @@ export default {
   z-index: -10;
   top: 0;
   display: flex;
+  overflow: hidden;
   .backgroundImg {
     width: 100%;
     display: block;
