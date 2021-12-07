@@ -97,7 +97,7 @@ export default {
     if (isLogin()) {
       this.userId = getUid();
     }
-    console.log(this.isRobot? "left" : "right");
+    // console.log(this.isRobot? "left" : "right");
   },
   data () {
     return {

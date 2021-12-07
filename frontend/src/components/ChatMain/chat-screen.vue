@@ -123,7 +123,6 @@ export default {
       // Who has a smaller uid will start the conversation first
       this.chatterUid = info.chatterId;
       this.chatBotName = info.chatBotName;
-      console.log(this.chatBotName);// TODO haha
       this.uid = info.uid;
       this.canSend = this.uid < this.chatterUid;
       // Initialize placeholder for the input box
