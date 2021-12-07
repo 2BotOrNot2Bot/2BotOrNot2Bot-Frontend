@@ -152,7 +152,11 @@ export default {
     initWebSocket(chatterUid) {
       let _this = this;
       if('WebSocket' in window){
-        _this.websocket = new WebSocket("ws://localhost:8080/api/chat/" + _this.uid + "/" + chatterUid);
+        // Use this one for running the frontend on localhost
+        // _this.websocket = new WebSocket("ws://localhost:8080/api/chat/" + _this.uid + "/" + chatterUid);
+
+        // Use this one for the hosting frontend
+        _this.websocket = new WebSocket("ws://ec2-3-21-129-73.us-east-2.compute.amazonaws.com:8080/api/chat/" + _this.uid + "/" + chatterUid);
       } else{
         _this.$message.error("Your browser does not support websocket. Please try with another web browser.")
         setTimeout(() => {
