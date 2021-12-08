@@ -15,8 +15,7 @@ module.exports = {
         // target: 'http://localhost:8080',
         target: 'https://botbackend.xyz:8080',
         changeOrigin: true,
-        ws: true,
-        secure: true
+        ws: true
       }
     },
 
