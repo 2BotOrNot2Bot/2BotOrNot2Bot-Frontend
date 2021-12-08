@@ -14,6 +14,7 @@ Axios.interceptors.request.use((config) => {
 }
 
 Axios.interceptors.response.use((response) => {
+  console.log(response);
   if (response.data.code === "000") {
     return Promise.resolve(response.data.data)
   } else {

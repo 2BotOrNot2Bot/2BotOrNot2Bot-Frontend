@@ -23,7 +23,7 @@ export default {
   data(){
     return{
       email:'',
-      logo: require('@/assets/logo-b.svg')
+      logo: require('@/assets/image/logo-b.svg')
     }
   },
   methods: {
@@ -75,7 +75,7 @@ export default {
 #bg{
   width:100%;
   height:100%;
-  background:url("../../assets/bg.jpg") no-repeat fixed;
+  background:url("../../assets/image/bg.jpg") no-repeat fixed;
   box-sizing:border-box;
   z-index:1;
 }

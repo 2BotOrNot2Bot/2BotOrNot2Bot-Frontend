@@ -83,7 +83,7 @@ export default {
   },
   data () {
     return {
-      background: require('@/assets/background.png'),
+      background: require('@/assets/image/background.png'),
       chooseContinue: false,
       showAbout: false
     }

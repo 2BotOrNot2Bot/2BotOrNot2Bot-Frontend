@@ -64,8 +64,8 @@ export default {
   },
   data () {
     return {
-      brainshop: require("@/assets/brainshop.png"),
-      aichatbot: require("@/assets/aichatbot.jpg"),
+      brainshop: require("@/assets/image/brainshop.png"),
+      aichatbot: require("@/assets/image/aichatbot.jpg"),
       displayStats: '',
       displayName: ''
     }
