@@ -8,15 +8,15 @@ module.exports = {
   dev: {
     // Paths
     assetsSubDirectory: 'static',
-    assetsPublicPath: 's/',
+    assetsPublicPath: '/',
     proxyTable: {
       // Backend proxy configuration
       '/api': {
         // target: 'http://localhost:8080',
-        target: 'https://api.botbackend.xyz:8080/',
+        target: 'https://botbackend.xyz:8080',
         changeOrigin: true,
         ws: true,
-        secure: false
+        secure: true
       }
     },
 

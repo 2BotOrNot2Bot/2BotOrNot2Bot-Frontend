@@ -116,7 +116,7 @@ export default {
         });
         // Enable the input box and send button after receiving a new message
         _this.canSend = true;
-        this.placeholder = "Please enter your message";
+        _this.placeholder = "Please enter your message";
       }
     },
     startChat(info) {
@@ -155,7 +155,7 @@ export default {
         // _this.websocket = new WebSocket("ws://localhost:8080/api/chat/" + _this.uid + "/" + chatterUid);
 
         // Use this one for the hosting frontend
-        _this.websocket = new WebSocket("ws://ec2-3-21-129-73.us-east-2.compute.amazonaws.com:8080/api/chat/" + _this.uid + "/" + chatterUid);
+        _this.websocket = new WebSocket("wss://botbackend.xyz:8080/api/chat/" + _this.uid + "/" + chatterUid);
       } else{
         _this.$message.error("Your browser does not support websocket. Please try with another web browser.")
         setTimeout(() => {
@@ -171,7 +171,7 @@ export default {
         });
         // Enable the input box and send button after receiving a new message
         _this.canSend = true;
-        this.placeholder = "Please enter your message";
+        _this.placeholder = "Please enter your message";
       }
 
       // Function for handling connection errors
