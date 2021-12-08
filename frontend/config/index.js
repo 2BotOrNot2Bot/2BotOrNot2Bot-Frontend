@@ -13,7 +13,7 @@ module.exports = {
       // Backend proxy configuration
       '/api': {
         // target: 'http://localhost:8080',
-        target: 'http://ec2-3-21-129-73.us-east-2.compute.amazonaws.com:8080',
+        target: 'https://Haha-3a07fe79656f5534.elb.us-east-2.amazonaws.com:8080/',
         changeOrigin: true,
         ws: true,
         secure: false

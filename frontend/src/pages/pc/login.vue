@@ -61,7 +61,7 @@ export default {
               }, 2500);
             }).catch(err => {
               loading.close();
-              console.log("haha");  // TODO
+              console.log(err);  // TODO
               this.$message.error(err);
             })
           }).catch(err => {
