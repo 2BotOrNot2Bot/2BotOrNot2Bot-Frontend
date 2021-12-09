@@ -1,5 +1,5 @@
 [[redirects]]
   from = "/api/*"
-  to = "https://botbackend.xyz:8080/api/:splat"
+  to = "https://botbackend.xyz/api/:splat"
   status = 200
   force = true
