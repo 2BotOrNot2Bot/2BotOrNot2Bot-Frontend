@@ -5,6 +5,6 @@
   force = true
 
 [[redirects]]
-  from = "/pc/*"
-  to = "/"
+  from = "/pc/home"
+  to = "/pc/home"
   status = 301
