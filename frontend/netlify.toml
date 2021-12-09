@@ -8,3 +8,8 @@
   from = "/pc/home"
   to = "/pc/home"
   status = 301
+
+[[redirects]]
+  from = "/pc/login"
+  to = "/pc/login"
+  status = 301
