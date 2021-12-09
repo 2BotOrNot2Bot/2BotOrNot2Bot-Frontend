@@ -8,3 +8,23 @@
   from = "/pc/home"
   to = "/"
   status = 301
+
+[[redirects]]
+  from = "/pc/chat"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/pc/login"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/pc/signup"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/pc/changepassword"
+  to = "/"
+  status = 301
