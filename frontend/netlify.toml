@@ -26,5 +26,5 @@
 
 [[redirects]]
   from = "/pc/home/"
-  to = "/pc/home"
+  to = "/"
   status = 301
