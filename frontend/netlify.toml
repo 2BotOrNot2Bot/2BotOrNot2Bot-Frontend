@@ -5,26 +5,6 @@
   force = true
 
 [[redirects]]
-  from = "/pc/login/"
-  to = "/pc/login"
-  status = 301
-
-[[redirects]]
-  from = "/pc/signup/"
-  to = "/pc/signup"
-  status = 301
-
-[[redirects]]
-  from = "/pc/changepassword/"
-  to = "/pc/changepassword"
-  status = 301
-
-[[redirects]]
-  from = "/pc/chat/"
-  to = "/pc/home/"
-  status = 301
-
-[[redirects]]
-  from = "/pc/home/"
+  from = "/pc/*"
   to = "/"
   status = 301
