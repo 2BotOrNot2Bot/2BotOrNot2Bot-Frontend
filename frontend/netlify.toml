@@ -3,3 +3,8 @@
   to = "https://botbackend.xyz:8080/api/:splat"
   status = 200
   force = true
+
+[[redirects]]
+  from = "/pc/home/"
+  to = "/"
+  status = 301
